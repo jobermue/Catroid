@@ -1,6 +1,6 @@
 /*
  * Catroid: An on-device visual programming system for Android devices
- * Copyright (C) 2010-2017 The Catrobat Team
+ * Copyright (C) 2010-2016 The Catrobat Team
  * (<http://developer.catrobat.org/credits>)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,31 +20,31 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.catrobat.catroid.bluetooth.base;
+package org.catrobat.catroid.devices.arduino.asuro;
 
-import org.catrobat.catroid.devices.arduino.Arduino;
-import org.catrobat.catroid.devices.arduino.asuro.Asuro;
-import org.catrobat.catroid.devices.arduino.phiro.Phiro;
-import org.catrobat.catroid.devices.mindstorms.ev3.LegoEV3;
-import org.catrobat.catroid.devices.mindstorms.nxt.LegoNXT;
-import org.catrobat.catroid.stage.StageResourceInterface;
+import org.catrobat.catroid.bluetooth.base.BluetoothDevice;
+import org.catrobat.catroid.formulaeditor.Sensors;
 
-import java.util.UUID;
+public interface Asuro extends BluetoothDevice {
 
-public interface BluetoothDevice extends StageResourceInterface {
+	void playTone(int toneFrequency, int duration);
 
-	Class<LegoNXT> LEGO_NXT = LegoNXT.class;
-	Class<LegoEV3> LEGO_EV3 = LegoEV3.class;
-	Class<Phiro> PHIRO = Phiro.class;
-	Class<Asuro> ASURO = Asuro.class;
-	Class<Arduino> ARDUINO = Arduino.class;
+	void moveLeftMotorForward(int speed);
+	void moveLeftMotorBackward(int speed);
 
-	String getName();
-	Class<? extends BluetoothDevice> getDeviceType();
-	void setConnection(BluetoothConnection connection);
-	void disconnect();
+	void moveRightMotorForward(int speed);
+	void moveRightMotorBackward(int speed);
 
-	boolean isAlive();
+	void stopLeftMotor();
+	void stopRightMotor();
+	void stopAllMovements();
 
-	UUID getBluetoothDeviceUUID();
+	void setStatusLEDColor(int red, int green);
+	void setFrontLED(boolean on);
+	void setLeftBackLED(boolean on);
+	void setRightBackLED(boolean on);
+
+	void reportFirmwareVersion();
+
+	int getSensorValue(Sensors sensor);
 }
