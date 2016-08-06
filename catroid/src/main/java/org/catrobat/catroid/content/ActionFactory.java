@@ -99,6 +99,13 @@ import org.catrobat.catroid.content.actions.PhiroMotorStopAction;
 import org.catrobat.catroid.content.actions.PhiroPlayToneAction;
 import org.catrobat.catroid.content.actions.PhiroRGBLightAction;
 import org.catrobat.catroid.content.actions.PhiroSensorAction;
+import org.catrobat.catroid.content.actions.AsuroMotorMoveBackwardAction;
+import org.catrobat.catroid.content.actions.AsuroMotorMoveForwardAction;
+import org.catrobat.catroid.content.actions.AsuroMotorStopAction;
+//TODO
+//import org.catrobat.catroid.content.actions.AsuroPlayToneAction;
+//import org.catrobat.catroid.content.actions.AsuroRGBLightAction;
+//import org.catrobat.catroid.content.actions.AsuroSensorAction;
 import org.catrobat.catroid.content.actions.PlaySoundAction;
 import org.catrobat.catroid.content.actions.PointInDirectionAction;
 import org.catrobat.catroid.content.actions.PointToAction;
@@ -156,6 +163,12 @@ import org.catrobat.catroid.content.bricks.PhiroMotorMoveForwardBrick;
 import org.catrobat.catroid.content.bricks.PhiroMotorStopBrick;
 import org.catrobat.catroid.content.bricks.PhiroPlayToneBrick;
 import org.catrobat.catroid.content.bricks.PhiroRGBLightBrick;
+import org.catrobat.catroid.content.bricks.AsuroMotorMoveBackwardBrick;
+import org.catrobat.catroid.content.bricks.AsuroMotorMoveForwardBrick;
+import org.catrobat.catroid.content.bricks.AsuroMotorStopBrick;
+//TODO
+//import org.catrobat.catroid.content.bricks.AsuroPlayToneBrick;
+//import org.catrobat.catroid.content.bricks.AsuroRGBLightBrick;
 import org.catrobat.catroid.content.bricks.UserBrick;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.UserList;
@@ -467,6 +480,52 @@ public class ActionFactory extends Actions {
 
 	public Action createPhiroMotorStopActionAction(PhiroMotorStopBrick.Motor motorEnum) {
 		PhiroMotorStopAction action = action(PhiroMotorStopAction.class);
+		action.setMotorEnum(motorEnum);
+		return action;
+	}
+
+	public Action createAsuroMotorMoveForwardActionAction(Sprite sprite, AsuroMotorMoveForwardBrick.Motor motorEnum,
+														  Formula speed) {
+		AsuroMotorMoveForwardAction action = action(AsuroMotorMoveForwardAction.class);
+		action.setMotorEnum(motorEnum);
+		action.setSprite(sprite);
+		action.setSpeed(speed);
+		return action;
+	}
+
+	public Action createAsuroMotorMoveBackwardActionAction(Sprite sprite, AsuroMotorMoveBackwardBrick.Motor motorEnum,
+														   Formula speed) {
+		AsuroMotorMoveBackwardAction action = action(AsuroMotorMoveBackwardAction.class);
+		action.setMotorEnum(motorEnum);
+		action.setSprite(sprite);
+		action.setSpeed(speed);
+		return action;
+	}
+
+//TODO
+//	public Action createAsuroRgbLedEyeActionAction(Sprite sprite, AsuroRGBLightBrick.Eye eye,
+//												   Formula red, Formula green, Formula blue) {
+//		AsuroRGBLightAction action = action(AsuroRGBLightAction.class);
+//		action.setSprite(sprite);
+//		action.setEyeEnum(eye);
+//		action.setRed(red);
+//		action.setGreen(green);
+//		action.setBlue(blue);
+//		return action;
+//	}
+//
+//	public Action createAsuroSendSelectedSensorAction(Sprite sprite, int sensorNumber, Action ifAction, Action
+//			elseAction) {
+//		AsuroSensorAction action = action(AsuroSensorAction.class);
+//		action.setSprite(sprite);
+//		action.setSensor(sensorNumber);
+//		action.setIfAction(ifAction);
+//		action.setElseAction(elseAction);
+//		return action;
+//	}
+
+	public Action createAsuroMotorStopActionAction(AsuroMotorStopBrick.Motor motorEnum) {
+		AsuroMotorStopAction action = action(AsuroMotorStopAction.class);
 		action.setMotorEnum(motorEnum);
 		return action;
 	}

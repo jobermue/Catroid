@@ -123,6 +123,8 @@
     <string name="preference_title_drone_config_properties">Drone configuration properties</string>
     <string name="preference_title_enable_phiro_bricks">Phiro bricks</string>
     <string name="preference_description_phiro_bricks">Allow to control Phiro robots</string>
+    <string name="preference_title_enable_asuro_bricks">Asuro bricks</string>
+    <string name="preference_description_asuro_bricks">Allow to control Asuro robots</string>
     <string name="preference_title_enable_arduino_bricks">Arduino bricks</string>
     <string name="preference_title_cast_feature_globally_enabled">Enable cast features</string>
     <string name="preference_description_cast_feature_globally_enabled">Show cast button and allow cast project creation</string>
@@ -655,6 +657,7 @@
     <string name="category_lego_ev3">Lego EV3</string>
     <string name="category_drone">AR.Drone</string>
     <string name="category_phiro">Phiro</string>
+    <string name="category_asuro">Asuro</string>
     <string name="category_arduino">Arduino</string>
     <string name="category_cast">Cast</string>
     <string name="category_raspi">Raspberry Pi</string>
@@ -1235,6 +1238,45 @@
     <string name="color_blue">Blue</string>
     <string name="color_preview">Color Preview</string>
     <!-- -->
+
+
+    <!-- Asuro bricks -->
+    <!-- motor -->
+    <string name="asuro_motor_stop">Stop Asuro motor</string>
+    <string name="brick_asuro_motor_forward_action">Move Asuro motor forward</string>
+    <string name="brick_asuro_motor_backward_action">Move Asuro motor backward</string>
+    <string name="asuro_motor_speed">Speed</string>
+
+    <!-- sensor -->
+    <string name="brick_asuro_sensor_begin">If Asuro</string>
+    <string name="brick_asuro_sensor_second_part">is activated</string>
+
+    <!-- light -->
+    <string name="brick_asuro_rgb_led_action">Set Asuro light</string>
+    <string name="asuro_status_led_red">Red</string>
+    <string name="asuro_status_led_green">Green</string>
+    <!--  -->
+
+    <!-- Asuro motor strings -->
+    <string name="asuro_motor_left">Left</string>
+    <string name="asuro_motor_right">Right</string>
+    <string name="asuro_motor_both">Both</string>
+    <!--  -->
+
+    <!-- Asuro light strings -->
+    <string name="asuro_light_left">Left</string>
+    <string name="asuro_light_right">Right</string>
+    <string name="asuro_light_both">Both</string>
+    <!--  -->
+
+    <!-- Asuro sensor strings -->
+    <string name="asuro_sensor_bumper">Bumper Sensor</string>
+    <string name="asuro_sensor_side_left">Side Left Sensor</string>
+    <string name="asuro_sensor_side_right">Side Right Sensor</string>
+    <string name="asuro_sensor_bottom_left">Bottom Left Sensor</string>
+    <string name="asuro_sensor_bottom_right">Bottom Right Sensor</string>
+    <!--  -->
+
 
     <!-- Formula Editor Strings -->
     <string name="formula_editor_data">Data</string>

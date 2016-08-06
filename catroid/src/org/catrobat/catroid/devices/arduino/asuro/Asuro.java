@@ -27,8 +27,6 @@ import org.catrobat.catroid.formulaeditor.Sensors;
 
 public interface Asuro extends BluetoothDevice {
 
-	void playTone(int toneFrequency, int duration);
-
 	void moveLeftMotorForward(int speed);
 	void moveLeftMotorBackward(int speed);
 

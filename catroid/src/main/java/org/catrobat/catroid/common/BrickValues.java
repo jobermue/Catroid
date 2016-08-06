@@ -137,6 +137,13 @@ public final class BrickValues {
 	public static final int PHIRO_VALUE_BLUE = 255;
 	public static final String PHIRO_IF_SENSOR_DEFAULT_VALUE = "Front Left Sensor";
 
+	//Constants Asuro
+	public static final int ASURO_SPEED = 100;
+	public static final int ASURO_DURATION = 1;
+	public static final int ASURO_VALUE_RED = 0;
+	public static final int ASURO_VALUE_GREEN = 255;
+	public static final String ASURO_IF_SENSOR_DEFAULT_VALUE = "Front Left Sensor";
+
 	//Constants Arduino
 	public static final int ARDUINO_PWM_INITIAL_PIN_VALUE = 255;
 	public static final int ARDUINO_PWM_INITIAL_PIN_NUMBER = 3;

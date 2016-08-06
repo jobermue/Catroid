@@ -206,6 +206,36 @@
         <item>@string/phiro_sensor_bottom_right</item>
     </string-array>
 
+    <!-- Asuro motor spinner -->
+    <string-array name="brick_asuro_select_motor_spinner">
+        <item>@string/asuro_motor_left</item>
+        <item>@string/asuro_motor_right</item>
+        <item>@string/asuro_motor_both</item>
+    </string-array>
+
+    <!-- Asuro stop motor spinner -->
+    <string-array name="brick_asuro_stop_motor_spinner">
+        <item>@string/asuro_motor_left</item>
+        <item>@string/asuro_motor_right</item>
+        <item>@string/asuro_motor_both</item>
+    </string-array>
+
+    <!-- Asuro light spinner -->
+    <string-array name="brick_asuro_select_light_spinner">
+        <item>@string/asuro_light_left</item>
+        <item>@string/asuro_light_right</item>
+        <item>@string/asuro_light_both</item>
+    </string-array>
+
+    <!-- Asuro sensor spinner -->
+    <string-array name="brick_asuro_select_sensor_spinner">
+        <item>@string/asuro_sensor_bumper</item>
+        <item>@string/asuro_sensor_side_left</item>
+        <item>@string/asuro_sensor_side_right</item>
+        <item>@string/asuro_sensor_bottom_left</item>
+        <item>@string/asuro_sensor_bottom_right</item>
+    </string-array>
+
     <!-- Physics object type spinner -->
     <string-array name="physics_object_types">
         <item>@string/brick_set_physics_object_type_dynamic</item>

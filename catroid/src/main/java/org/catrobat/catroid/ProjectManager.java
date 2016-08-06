@@ -271,6 +271,10 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 				SettingsActivity.setPhiroSharedPreferenceEnabled(context, true);
 			}
 
+			if ((resources & Brick.BLUETOOTH_PHIRO) > 0) {
+				SettingsActivity.setAsuroSharedPreferenceEnabled(context, true);
+			}
+
 			if ((resources & Brick.BLUETOOTH_SENSORS_ARDUINO) > 0) {
 				SettingsActivity.setArduinoSharedPreferenceEnabled(context, true);
 			}

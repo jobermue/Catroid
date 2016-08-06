@@ -93,27 +93,6 @@ public class AsuroImpl implements Asuro {
 	private AsuroListener asuroListener;
 
 	@Override
-	public synchronized void playTone(int selectedTone, int durationInSeconds) {
-		sendAnalogFirmataMessage(PIN_SPEAKER_OUT, selectedTone);
-
-		if (currentStopPlayToneTask != null) {
-			currentStopPlayToneTask.cancel();
-		}
-		currentStopPlayToneTask = new StopPlayToneTask();
-		timer.schedule(currentStopPlayToneTask, durationInSeconds * 1000);
-	}
-
-	Timer timer = new Timer();
-	TimerTask currentStopPlayToneTask = null;
-
-	private class StopPlayToneTask extends TimerTask {
-		@Override
-		public void run() {
-			sendAnalogFirmataMessage(PIN_SPEAKER_OUT, MIN_VALUE);
-		}
-	}
-
-	@Override
 	public void moveLeftMotorForward(int speedInPercent) {
 		sendAnalogFirmataMessage(PIN_LEFT_MOTOR_SPEED, percentToSpeed(speedInPercent));
 		sendAnalogFirmataMessage(PIN_LEFT_MOTOR_FORWARD, MAX_VALUE);

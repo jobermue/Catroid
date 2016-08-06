@@ -54,6 +54,7 @@ public class SettingsActivity extends PreferenceActivity {
 	public static final String SETTINGS_SHOW_PARROT_AR_DRONE_BRICKS = "setting_parrot_ar_drone_bricks";
 	public static final String SETTINGS_DRONE_CHOOSER = "settings_chooser_drone";
 	public static final String SETTINGS_SHOW_PHIRO_BRICKS = "setting_enable_phiro_bricks";
+	public static final String SETTINGS_SHOW_ASURO_BRICKS = "setting_enable_asuro_bricks";
 	public static final String SETTINGS_SHOW_ARDUINO_BRICKS = "setting_arduino_bricks";
 	public static final String SETTINGS_SHOW_RASPI_BRICKS = "setting_raspi_bricks";
 	public static final String SETTINGS_SHOW_NFC_BRICKS = "setting_nfc_bricks";
@@ -126,6 +127,13 @@ public class SettingsActivity extends PreferenceActivity {
 			PreferenceScreen phiroPreference = (PreferenceScreen) findPreference(SETTINGS_SHOW_PHIRO_BRICKS);
 			phiroPreference.setEnabled(false);
 			screen.removePreference(phiroPreference);
+		}
+
+		//TODO
+		if (!BuildConfig.FEATURE_PHIRO_ENABLED) {
+			PreferenceScreen asuroPreference = (PreferenceScreen) findPreference(SETTINGS_SHOW_ASURO_BRICKS);
+			asuroPreference.setEnabled(false);
+			screen.removePreference(asuroPreference);
 		}
 
 		if (!BuildConfig.FEATURE_ARDUINO_ENABLED) {
@@ -364,6 +372,16 @@ public class SettingsActivity extends PreferenceActivity {
 	public static void setPhiroSharedPreferenceEnabled(Context context, boolean value) {
 		SharedPreferences.Editor editor = getSharedPreferences(context).edit();
 		editor.putBoolean(SETTINGS_SHOW_PHIRO_BRICKS, value);
+		editor.commit();
+	}
+
+	public static boolean isAsuroSharedPreferenceEnabled(Context context) {
+		return getBooleanSharedPreference(false, SETTINGS_SHOW_ASURO_BRICKS, context);
+	}
+
+	public static void setAsuroSharedPreferenceEnabled(Context context, boolean value) {
+		SharedPreferences.Editor editor = getSharedPreferences(context).edit();
+		editor.putBoolean(SETTINGS_SHOW_ASURO_BRICKS, value);
 		editor.commit();
 	}
 
