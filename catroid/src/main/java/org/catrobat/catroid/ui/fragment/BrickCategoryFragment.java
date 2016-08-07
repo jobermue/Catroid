@@ -177,6 +177,10 @@ public class BrickCategoryFragment extends ListFragment {
 			categories.add(inflater.inflate(R.layout.brick_category_phiro, null));
 		}
 
+		if (SettingsActivity.isAsuroSharedPreferenceEnabled(getActivity())) {
+			categories.add(inflater.inflate(R.layout.brick_category_asuro, null));
+		}
+
 		if (SettingsActivity.isArduinoSharedPreferenceEnabled(getActivity())) {
 			categories.add(inflater.inflate(R.layout.brick_category_arduino, null));
 		}

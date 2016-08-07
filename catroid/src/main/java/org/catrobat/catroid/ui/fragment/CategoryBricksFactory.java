@@ -100,6 +100,13 @@ import org.catrobat.catroid.content.bricks.PhiroMotorMoveForwardBrick;
 import org.catrobat.catroid.content.bricks.PhiroMotorStopBrick;
 import org.catrobat.catroid.content.bricks.PhiroPlayToneBrick;
 import org.catrobat.catroid.content.bricks.PhiroRGBLightBrick;
+//TODO
+//import org.catrobat.catroid.content.bricks.AsuroIfLogicBeginBrick;
+import org.catrobat.catroid.content.bricks.AsuroMotorMoveBackwardBrick;
+import org.catrobat.catroid.content.bricks.AsuroMotorMoveForwardBrick;
+import org.catrobat.catroid.content.bricks.AsuroMotorStopBrick;
+//import org.catrobat.catroid.content.bricks.AsuroPlayToneBrick;
+//import org.catrobat.catroid.content.bricks.AsuroRGBLightBrick;
 import org.catrobat.catroid.content.bricks.PlaceAtBrick;
 import org.catrobat.catroid.content.bricks.PlaySoundAndWaitBrick;
 import org.catrobat.catroid.content.bricks.PlaySoundBrick;
@@ -218,6 +225,8 @@ public class CategoryBricksFactory {
 			tempList = setupPhiroProCategoryList();
 		} else if (category.equals(context.getString(R.string.category_cast))) {
 			tempList = setupChromecastCategoryList(context);
+		} else if (category.equals(context.getString(R.string.category_asuro))) {
+			tempList = setupAsuroCategoryList();
 		} else if (category.equals(context.getString(R.string.category_raspi))) {
 			tempList = setupRaspiCategoryList();
 		}
@@ -527,6 +536,29 @@ public class CategoryBricksFactory {
 		phiroProBrickList.add(new SetVariableBrick(Sensors.PHIRO_BOTTOM_RIGHT));
 
 		return phiroProBrickList;
+	}
+
+	private List<Brick> setupAsuroCategoryList() {
+		List<Brick> asuroBrickList = new ArrayList<>();
+		asuroBrickList.add(new AsuroMotorMoveForwardBrick(AsuroMotorMoveForwardBrick.Motor.MOTOR_LEFT,
+				BrickValues.ASURO_SPEED));
+		asuroBrickList.add(new AsuroMotorMoveBackwardBrick(AsuroMotorMoveBackwardBrick.Motor.MOTOR_LEFT,
+				BrickValues.ASURO_SPEED));
+		asuroBrickList.add(new AsuroMotorStopBrick(AsuroMotorStopBrick.Motor.MOTOR_BOTH));
+
+		//TODO
+//		asuroBrickList.add(new PhiroPlayToneBrick(PhiroPlayToneBrick.Tone.DO,
+//				BrickValues.PHIRO_DURATION));
+//		asuroBrickList.add(new PhiroRGBLightBrick(PhiroRGBLightBrick.Eye.BOTH, BrickValues.PHIRO_VALUE_RED, BrickValues.PHIRO_VALUE_GREEN, BrickValues.PHIRO_VALUE_BLUE));
+//		asuroBrickList.add(new PhiroIfLogicBeginBrick());
+//		asuroBrickList.add(new SetVariableBrick(Sensors.PHIRO_FRONT_LEFT));
+//		asuroBrickList.add(new SetVariableBrick(Sensors.PHIRO_FRONT_RIGHT));
+//		asuroBrickList.add(new SetVariableBrick(Sensors.PHIRO_SIDE_LEFT));
+//		asuroBrickList.add(new SetVariableBrick(Sensors.PHIRO_SIDE_RIGHT));
+//		asuroBrickList.add(new SetVariableBrick(Sensors.PHIRO_BOTTOM_LEFT));
+//		asuroBrickList.add(new SetVariableBrick(Sensors.PHIRO_BOTTOM_RIGHT));
+
+		return asuroBrickList;
 	}
 
 	private List<Brick> setupArduinoCategoryList() {
