@@ -23,7 +23,6 @@
 package org.catrobat.catroid.content.bricks;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.AdapterView;
@@ -53,7 +52,6 @@ public class AsuroMotorMoveForwardBrick extends FormulaBrick {
 	private static final long serialVersionUID = 1L;
 
 	private transient View prototypeView;
-	private transient AdapterView<?> adapterView;
 	private String motor;
 	private transient Motor motorEnum;
 	private transient TextView editSpeed;
@@ -151,7 +149,7 @@ public class AsuroMotorMoveForwardBrick extends FormulaBrick {
 		}
 
 		view = View.inflate(context, R.layout.brick_asuro_motor_forward, null);
-		view = getViewWithAlpha(alphaValue);
+		view = BrickViewProvider.setAlphaOnView(view, alphaValue);
 		setCheckboxView(R.id.brick_asuro_motor_forward_action_checkbox);
 
 		final Brick brickInstance = this;
@@ -193,7 +191,6 @@ public class AsuroMotorMoveForwardBrick extends FormulaBrick {
 			public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
 				motorEnum = Motor.values()[position];
 				motor = motorEnum.name();
-				adapterView = arg0;
 			}
 
 			@Override
@@ -209,42 +206,6 @@ public class AsuroMotorMoveForwardBrick extends FormulaBrick {
 	@Override
 	public View getCustomView(Context context, int brickId, BaseAdapter baseAdapter) {
 		return speedSeekbar.getView(context);
-	}
-
-	@Override
-	public View getViewWithAlpha(int alphaValue) {
-
-		if (view != null) {
-
-			View layout = view.findViewById(R.id.brick_asuro_motor_forward_action_layout);
-			Drawable background = layout.getBackground();
-			background.setAlpha(alphaValue);
-
-			TextView textAsuroProMotorActionLabel = (TextView) view.findViewById(R.id.brick_asuro_motor_forward_action_label);
-			TextView textAsuroProMotorActionSpeed = (TextView) view.findViewById(R.id.brick_asuro_motor_forward_action_speed);
-			TextView textAsuroProMotorActionPercent = (TextView) view.findViewById(R.id.brick_asuro_motor_forward_action_percent);
-			TextView textAsuroProMotorActionLabelSpeedView = (TextView) view
-					.findViewById(R.id.brick_asuro_motor_forward_action_speed_text_view);
-			TextView editSpeed = (TextView) view.findViewById(R.id.brick_asuro_motor_forward_action_speed_edit_text);
-
-			textAsuroProMotorActionLabel.setTextColor(textAsuroProMotorActionLabel.getTextColors().withAlpha(alphaValue));
-			textAsuroProMotorActionSpeed.setTextColor(textAsuroProMotorActionSpeed.getTextColors().withAlpha(alphaValue));
-			textAsuroProMotorActionPercent.setTextColor(textAsuroProMotorActionPercent.getTextColors().withAlpha(alphaValue));
-			textAsuroProMotorActionLabelSpeedView.setTextColor(textAsuroProMotorActionLabelSpeedView.getTextColors().withAlpha(
-					alphaValue));
-			Spinner motorSpinner = (Spinner) view.findViewById(R.id.brick_asuro_motor_forward_action_spinner);
-			ColorStateList color = textAsuroProMotorActionLabelSpeedView.getTextColors().withAlpha(alphaValue);
-			motorSpinner.getBackground().setAlpha(alphaValue);
-			if (adapterView != null) {
-				((TextView) adapterView.getChildAt(0)).setTextColor(color);
-			}
-			editSpeed.setTextColor(editSpeed.getTextColors().withAlpha(alphaValue));
-			editSpeed.getBackground().setAlpha(alphaValue);
-
-			this.alphaValue = alphaValue;
-		}
-
-		return view;
 	}
 
 	@Override

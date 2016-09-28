@@ -23,7 +23,6 @@
 package org.catrobat.catroid.content.bricks;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.AdapterView;
@@ -46,7 +45,6 @@ public class AsuroMotorStopBrick extends BrickBaseType implements OnItemSelected
 	private static final long serialVersionUID = 1L;
 	private transient Motor motorEnum;
 	private String motor;
-	private transient AdapterView<?> adapterView;
 
 	public enum Motor {
 		MOTOR_LEFT, MOTOR_RIGHT, MOTOR_BOTH
@@ -106,7 +104,7 @@ public class AsuroMotorStopBrick extends BrickBaseType implements OnItemSelected
 			alphaValue = 255;
 		}
 		view = View.inflate(context, R.layout.brick_asuro_motor_stop, null);
-		view = getViewWithAlpha(alphaValue);
+		view = BrickViewProvider.setAlphaOnView(view, alphaValue);
 
 		setCheckboxView(R.id.brick_asuro_motor_stop_checkbox);
 		final Brick brickInstance = this;
@@ -142,35 +140,10 @@ public class AsuroMotorStopBrick extends BrickBaseType implements OnItemSelected
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 		motorEnum = Motor.values()[position];
 		motor = motorEnum.name();
-		adapterView = parent;
 	}
 
 	@Override
 	public void onNothingSelected(AdapterView<?> arg0) {
-	}
-
-	@Override
-	public View getViewWithAlpha(int alphaValue) {
-
-		if (view != null) {
-
-			View layout = view.findViewById(R.id.brick_asuro_motor_stop_layout);
-			Drawable background = layout.getBackground();
-			background.setAlpha(alphaValue);
-
-			TextView textAsuroProMotorStopLabel = (TextView) view.findViewById(R.id.ValueTextView);
-			textAsuroProMotorStopLabel.setTextColor(textAsuroProMotorStopLabel.getTextColors().withAlpha(alphaValue));
-			Spinner motorSpinner = (Spinner) view.findViewById(R.id.brick_asuro_stop_motor_spinner);
-			ColorStateList color = textAsuroProMotorStopLabel.getTextColors().withAlpha(alphaValue);
-			motorSpinner.getBackground().setAlpha(alphaValue);
-			if (adapterView != null) {
-				((TextView) adapterView.getChildAt(0)).setTextColor(color);
-			}
-
-			this.alphaValue = alphaValue;
-		}
-
-		return view;
 	}
 
 	@Override
