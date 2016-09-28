@@ -141,15 +141,6 @@ public class AsuroMotorMoveBackwardBrick extends FormulaBrick {
 		view = BrickViewProvider.setAlphaOnView(view, alphaValue);
 		setCheckboxView(R.id.brick_asuro_motor_backward_action_checkbox);
 
-		final Brick brickInstance = this;
-		checkbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-			@Override
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				checked = isChecked;
-				adapter.handleCheck(brickInstance, isChecked);
-			}
-		});
-
 		TextView textSpeed = (TextView) view.findViewById(R.id.brick_asuro_motor_backward_action_speed_text_view);
 		editSpeed = (TextView) view.findViewById(R.id.brick_asuro_motor_backward_action_speed_edit_text);
 		getFormulaWithBrickField(BrickField.ASURO_SPEED).setTextFieldId(R.id.brick_asuro_motor_backward_action_speed_edit_text);
