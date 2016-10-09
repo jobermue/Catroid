@@ -97,7 +97,7 @@ public class AsuroMotorMoveBackwardBrick extends FormulaBrick {
 	@Override
 	public View getPrototypeView(Context context) {
 		prototypeView = View.inflate(context, R.layout.brick_asuro_motor_backward, null);
-		TextView textSpeed = (TextView) prototypeView.findViewById(R.id.brick_asuro_motor_backward_action_speed_text_view);
+		TextView textSpeed = (TextView) prototypeView.findViewById(R.id.brick_asuro_motor_backward_action_speed_edit_text);
 		textSpeed.setText(String.valueOf(BrickValues.ASURO_SPEED));
 
 		Spinner asuroProMotorSpinner = (Spinner) prototypeView.findViewById(R.id.brick_asuro_motor_backward_action_spinner);
@@ -133,13 +133,9 @@ public class AsuroMotorMoveBackwardBrick extends FormulaBrick {
 		view = BrickViewProvider.setAlphaOnView(view, alphaValue);
 		setCheckboxView(R.id.brick_asuro_motor_backward_action_checkbox);
 
-		TextView textSpeed = (TextView) view.findViewById(R.id.brick_asuro_motor_backward_action_speed_text_view);
 		editSpeed = (TextView) view.findViewById(R.id.brick_asuro_motor_backward_action_speed_edit_text);
 		getFormulaWithBrickField(BrickField.ASURO_SPEED).setTextFieldId(R.id.brick_asuro_motor_backward_action_speed_edit_text);
 		getFormulaWithBrickField(BrickField.ASURO_SPEED).refreshTextField(view);
-
-		textSpeed.setVisibility(View.GONE);
-		editSpeed.setVisibility(View.VISIBLE);
 
 		editSpeed.setOnClickListener(this);
 
