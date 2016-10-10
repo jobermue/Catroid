@@ -61,15 +61,14 @@ public class AsuroImpl implements Asuro {
 	/* TODO: find out pins of back LEDs */
 //	private static final int PIN_BACK_LED_LEFT = 7;
 //	private static final int PIN_BACK_LED_RIGHT = 8;
-
-	/* note: switche fwd & bwd pins on both motors as wrongly connected in hardware */
+	
 	private static final int PIN_LEFT_MOTOR_SPEED = 9; //15
-	private static final int PIN_LEFT_MOTOR_FORWARD = 4; //6
-	private static final int PIN_LEFT_MOTOR_BACKWARD = 5; //11
+	private static final int PIN_LEFT_MOTOR_FORWARD = 5; //6
+	private static final int PIN_LEFT_MOTOR_BACKWARD = 4; //11
 
 	private static final int PIN_RIGHT_MOTOR_SPEED = 10; //16
-	private static final int PIN_RIGHT_MOTOR_FORWARD = 12; //18
-	private static final int PIN_RIGHT_MOTOR_BACKWARD = 13; //19
+	private static final int PIN_RIGHT_MOTOR_FORWARD = 13; //18
+	private static final int PIN_RIGHT_MOTOR_BACKWARD = 12; //19
 
 	/* TODO: add pins for bumpers */
 
