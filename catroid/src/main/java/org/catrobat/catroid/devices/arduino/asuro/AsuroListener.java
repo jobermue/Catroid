@@ -43,13 +43,16 @@ class AsuroListener implements IFirmata.Listener {
 	private int sideLeftSensor = 0;
 	private int sideRightSensor = 0;
 
+	int[] portValue = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+	int[] uCPortValue = new int[] { 0, 0 };
+
 	@Override
 	public void onAnalogMessageReceived(AnalogMessage message) {
 		if (message.getValue() > 1023 || message.getValue() < 0) {
 			return;
 		}
 
-//		Log.d(TAG, String.format("Pin: %d | Value: %d", message.getPin() ,message.getValue()));
+		Log.d(TAG, String.format("Pin: %d | Value: %d", message.getPin() ,message.getValue()));
 
 		switch (message.getPin()) {
 			case AsuroImpl.PIN_SENSOR_BUMPERS:
@@ -74,8 +77,37 @@ class AsuroListener implements IFirmata.Listener {
 
 	@Override
 	public void onDigitalMessageReceived(DigitalMessage message) {
-		Log.d(TAG, String.format("Received Digital Message: pin: %d, value: %d",
+		if (message.getValue() > 128 || message.getValue() < 0) {
+			return;
+		}
+
+		Log.d(TAG, String.format("Received Digital Message: port: %d, value: %d",
 				message.getPort(), message.getValue()));
+
+		switch (message.getPort()) {
+			case 0:
+				portValue[2] = (message.getValue() & 0x4) == 0 ? 0 : 1;
+				portValue[3] = (message.getValue() & 0x8) == 0 ? 0 : 1;
+				portValue[4] = (message.getValue() & 0x10) == 0 ? 0 : 1;
+				portValue[5] = (message.getValue() & 0x20) == 0 ? 0 : 1;
+				portValue[6] = (message.getValue() & 0x40) == 0 ? 0 : 1;
+				portValue[7] = (message.getValue() & 0x80) == 0 ? 0 : 1;
+				uCPortValue[0] = message.getValue();
+				break;
+			case 1:
+				portValue[8] = (message.getValue() & 0x1) == 0 ? 0 : 1;
+				portValue[9] = (message.getValue() & 0x2) == 0 ? 0 : 1;
+				portValue[10] = (message.getValue() & 0x4) == 0 ? 0 : 1;
+				portValue[11] = (message.getValue() & 0x8) == 0 ? 0 : 1;
+				portValue[12] = (message.getValue() & 0x10) == 0 ? 0 : 1;
+				portValue[13] = (message.getValue() & 0x20) == 0 ? 0 : 1;
+				uCPortValue[1] = message.getValue();
+				break;
+		}
+
+		for (int i = 0; i <= 13; i++) {
+			Log.d(TAG, String.format("Digital Port Values: %d", portValue[i]));
+		}
 	}
 
 	@Override
@@ -126,5 +158,21 @@ class AsuroListener implements IFirmata.Listener {
 
 	public int getBottomRightSensor() {
 		return bottomRightSensor;
+	}
+
+	public int getPortValue(int pin) {
+		return portValue[pin];
+	}
+
+	public void setPortValue(int pin, int value) {
+		this.portValue[pin] = value;
+	}
+
+	public int getuCPortValue(int port) {
+		return uCPortValue[port];
+	}
+
+	public void setuCPortValue(int port, int value) {
+		this.uCPortValue[port] = value;
 	}
 }

@@ -36,8 +36,10 @@ import java.util.UUID;
 
 import name.antonsmirnov.firmata.Firmata;
 import name.antonsmirnov.firmata.message.AnalogMessage;
+import name.antonsmirnov.firmata.message.DigitalMessage;
 import name.antonsmirnov.firmata.message.Message;
 import name.antonsmirnov.firmata.message.ReportAnalogPinMessage;
+import name.antonsmirnov.firmata.message.ReportDigitalPortMessage;
 import name.antonsmirnov.firmata.message.ReportFirmwareVersionMessage;
 import name.antonsmirnov.firmata.message.SetPinModeMessage;
 import name.antonsmirnov.firmata.serial.ISerial;
@@ -75,6 +77,13 @@ public class AsuroImpl implements Asuro {
 	private static final int MIN_PWM_PIN = 2;
 	private static final int MAX_PWM_PIN = 13;
 
+	private static final int MIN_PWM_PIN_GROUP_1 = 3;
+	private static final int MAX_PWM_PIN_GROUP_1 = 3;
+	private static final int MIN_PWM_PIN_GROUP_2 = 5;
+	private static final int MAX_PWM_PIN_GROUP_2 = 6;
+	private static final int MIN_PWM_PIN_GROUP_3 = 9;
+	private static final int MAX_PWM_PIN_GROUP_3 = 11;
+
 	public static final int PIN_SENSOR_BUMPERS = 4;
 	public static final int PIN_SENSOR_BOTTOM_LEFT = 3;
 	public static final int PIN_SENSOR_BOTTOM_RIGHT = 2;
@@ -94,39 +103,39 @@ public class AsuroImpl implements Asuro {
 	@Override
 	public void moveLeftMotorForward(int speedInPercent) {
 		sendAnalogFirmataMessage(PIN_LEFT_MOTOR_SPEED, percentToSpeed(speedInPercent));
-		sendAnalogFirmataMessage(PIN_LEFT_MOTOR_FORWARD, MAX_VALUE);
-		sendAnalogFirmataMessage(PIN_LEFT_MOTOR_BACKWARD, MIN_VALUE);
+		setDigitalArduinoPin(PIN_LEFT_MOTOR_FORWARD, 1);
+		setDigitalArduinoPin(PIN_LEFT_MOTOR_BACKWARD, 0);
 	}
 
 	@Override
 	public void moveLeftMotorBackward(int speedInPercent) {
 		sendAnalogFirmataMessage(PIN_LEFT_MOTOR_SPEED, percentToSpeed(speedInPercent));
-		sendAnalogFirmataMessage(PIN_LEFT_MOTOR_FORWARD, MIN_VALUE);
-		sendAnalogFirmataMessage(PIN_LEFT_MOTOR_BACKWARD, MAX_VALUE);
+		setDigitalArduinoPin(PIN_LEFT_MOTOR_FORWARD, 0);
+		setDigitalArduinoPin(PIN_LEFT_MOTOR_BACKWARD, 1);
 	}
 
 	@Override
 	public void moveRightMotorForward(int speedInPercent) {
 		sendAnalogFirmataMessage(PIN_RIGHT_MOTOR_SPEED, percentToSpeed(speedInPercent));
-		sendAnalogFirmataMessage(PIN_RIGHT_MOTOR_FORWARD, MAX_VALUE);
-		sendAnalogFirmataMessage(PIN_RIGHT_MOTOR_BACKWARD, MIN_VALUE);
+		setDigitalArduinoPin(PIN_RIGHT_MOTOR_FORWARD, 1);
+		setDigitalArduinoPin(PIN_RIGHT_MOTOR_BACKWARD, 0);
 	}
 
 	@Override
 	public void moveRightMotorBackward(int speedInPercent) {
 		sendAnalogFirmataMessage(PIN_RIGHT_MOTOR_SPEED, percentToSpeed(speedInPercent));
-		sendAnalogFirmataMessage(PIN_RIGHT_MOTOR_FORWARD, MIN_VALUE);
-		sendAnalogFirmataMessage(PIN_RIGHT_MOTOR_BACKWARD, MAX_VALUE);
+		setDigitalArduinoPin(PIN_RIGHT_MOTOR_FORWARD, 0);
+		setDigitalArduinoPin(PIN_RIGHT_MOTOR_BACKWARD, 1);
 	}
 
 	@Override
 	public void stopLeftMotor() {
-		moveLeftMotorForward(MIN_VALUE);
+		moveLeftMotorForward(0);
 	}
 
 	@Override
 	public void stopRightMotor() {
-		moveRightMotorForward(MIN_VALUE);
+		moveRightMotorForward(0);
 	}
 
 	@Override
@@ -295,11 +304,21 @@ public class AsuroImpl implements Asuro {
 
 		firmata.getSerial().start();
 
-		for (int pin = MIN_PWM_PIN; pin <= MAX_PWM_PIN; ++pin) {
+		for (int pin = MIN_PWM_PIN_GROUP_1; pin <= MAX_PWM_PIN_GROUP_1; ++pin) {
+			sendFirmataMessage(new SetPinModeMessage(pin, SetPinModeMessage.PIN_MODE.PWM.getMode()));
+		}
+		for (int pin = MIN_PWM_PIN_GROUP_2; pin <= MAX_PWM_PIN_GROUP_2; ++pin) {
+			sendFirmataMessage(new SetPinModeMessage(pin, SetPinModeMessage.PIN_MODE.PWM.getMode()));
+		}
+		for (int pin = MIN_PWM_PIN_GROUP_3; pin <= MAX_PWM_PIN_GROUP_3; ++pin) {
 			sendFirmataMessage(new SetPinModeMessage(pin, SetPinModeMessage.PIN_MODE.PWM.getMode()));
 		}
 
 		reportSensorData(true);
+
+		// get status of digital ports
+		sendFirmataMessage(new ReportDigitalPortMessage(0, true));
+		sendFirmataMessage(new ReportDigitalPortMessage(1, true));
 	}
 
 	private void reportSensorData(boolean report) {
@@ -343,8 +362,38 @@ public class AsuroImpl implements Asuro {
 		resetPins();
 	}
 
+	public void setDigitalArduinoPin(int digitalPinNumber, int pinValue) {
+		int digitalPort = 0;
+		int PinNumberOfPort;
+		int PortValue;
+
+		if (digitalPinNumber < 8) {
+			digitalPort = 0;
+			PinNumberOfPort = digitalPinNumber;
+		} else {
+			digitalPort = 1;
+			PinNumberOfPort = digitalPinNumber - 8;
+		}
+
+		PortValue = asuroListener.getuCPortValue(digitalPort);
+		if (pinValue > 0) { // set pin
+			PortValue = PortValue | (1 << PinNumberOfPort);
+			asuroListener.setPortValue(digitalPinNumber, 1);
+		} else { // clear pin
+			PortValue = PortValue & ~(1 << PinNumberOfPort);
+			asuroListener.setPortValue(digitalPinNumber, 0);
+		}
+		sendDigitalFirmataMessage(digitalPort, digitalPinNumber, PortValue);
+		asuroListener.setuCPortValue(digitalPort, PortValue);
+	}
+
 	private void sendAnalogFirmataMessage(int pin, int value) {
 		sendFirmataMessage(new AnalogMessage(pin, value));
+	}
+
+	private void sendDigitalFirmataMessage(int port, int pin, int value) {
+		sendFirmataMessage(new SetPinModeMessage(pin, SetPinModeMessage.PIN_MODE.OUTPUT.getMode()));
+		sendFirmataMessage(new DigitalMessage(port, value));
 	}
 
 	private void sendFirmataMessage(Message message) {
