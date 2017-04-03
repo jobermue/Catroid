@@ -39,8 +39,8 @@ public class ArduinoListener implements IFirmata.Listener {
 
 	private static final String TAG = ArduinoListener.class.getSimpleName();
 
-	private int[] analogPinValue = new int[ArduinoImpl.NUMBER_OF_ANALOG_PINS];
-	private int[] portValue = new int[ArduinoImpl.NUMBER_OF_DIGITAL_PORTS];
+	protected int[] analogPinValue = new int[ArduinoImpl.NUMBER_OF_ANALOG_PINS];
+	protected int[] portValue = new int[ArduinoImpl.NUMBER_OF_DIGITAL_PORTS];
 
 	@Override
 	public void onAnalogMessageReceived(AnalogMessage message) {

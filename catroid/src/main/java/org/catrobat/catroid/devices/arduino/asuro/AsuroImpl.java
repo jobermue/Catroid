@@ -20,13 +20,13 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package org.catrobat.catroid.devices.arduino.asuro;
 
 import android.util.Log;
 
 import org.catrobat.catroid.bluetooth.base.BluetoothConnection;
 import org.catrobat.catroid.bluetooth.base.BluetoothDevice;
+import org.catrobat.catroid.devices.arduino.ArduinoImpl;
 import org.catrobat.catroid.formulaeditor.Sensors;
 
 import java.io.IOException;
@@ -46,7 +46,9 @@ import name.antonsmirnov.firmata.serial.ISerial;
 import name.antonsmirnov.firmata.serial.SerialException;
 import name.antonsmirnov.firmata.serial.StreamingSerialAdapter;
 
-public class AsuroImpl implements Asuro {
+public class AsuroImpl /*extends ArduinoImpl*/ implements Asuro {
+
+	public static final int[] PWM_PINS = { 3, 5, 6, 9, 10, 11 };
 
 	private static final UUID ASURO_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 	private static final String TAG = AsuroImpl.class.getSimpleName();
@@ -93,12 +95,12 @@ public class AsuroImpl implements Asuro {
 	private static final int MIN_SENSOR_PIN = 0;
 	private static final int MAX_SENSOR_PIN = 5;
 
-	private BluetoothConnection btConnection;
 	private Firmata firmata;
-	private boolean isInitialized = false;
 	private boolean isReportingSensorData = false;
+	private boolean isInitialized = false;
 
 	private AsuroListener asuroListener;
+	private BluetoothConnection btConnection;
 
 	@Override
 	public void moveLeftMotorForward(int speedInPercent) {
@@ -201,13 +203,13 @@ public class AsuroImpl implements Asuro {
 	}
 
 	@Override
-	public Class<? extends BluetoothDevice> getDeviceType() {
-		return ASURO;
+	public void setConnection(BluetoothConnection connection) {
+		this.btConnection = connection;
 	}
 
 	@Override
-	public void setConnection(BluetoothConnection connection) {
-		this.btConnection = connection;
+	public Class<? extends BluetoothDevice> getDeviceType() {
+		return BluetoothDevice.ASURO;
 	}
 
 	@Override
@@ -231,6 +233,7 @@ public class AsuroImpl implements Asuro {
 
 	@Override
 	public boolean isAlive() {
+
 		if (firmata == null) {
 			return false;
 		}
@@ -280,6 +283,7 @@ public class AsuroImpl implements Asuro {
 
 	@Override
 	public void initialise() {
+
 		if (isInitialized) {
 			return;
 		}
@@ -304,16 +308,9 @@ public class AsuroImpl implements Asuro {
 
 		firmata.getSerial().start();
 
-		for (int pin = MIN_PWM_PIN_GROUP_1; pin <= MAX_PWM_PIN_GROUP_1; ++pin) {
+		for (int pin : PWM_PINS) {
 			sendFirmataMessage(new SetPinModeMessage(pin, SetPinModeMessage.PIN_MODE.PWM.getMode()));
 		}
-		for (int pin = MIN_PWM_PIN_GROUP_2; pin <= MAX_PWM_PIN_GROUP_2; ++pin) {
-			sendFirmataMessage(new SetPinModeMessage(pin, SetPinModeMessage.PIN_MODE.PWM.getMode()));
-		}
-		for (int pin = MIN_PWM_PIN_GROUP_3; pin <= MAX_PWM_PIN_GROUP_3; ++pin) {
-			sendFirmataMessage(new SetPinModeMessage(pin, SetPinModeMessage.PIN_MODE.PWM.getMode()));
-		}
-
 		reportSensorData(true);
 
 		// get status of digital ports
@@ -328,9 +325,8 @@ public class AsuroImpl implements Asuro {
 
 		isReportingSensorData = report;
 
-		for (int pin = MIN_SENSOR_PIN; pin <= MAX_SENSOR_PIN; ++pin) {
-			// sendFirmataMessage(new SetPinModeMessage(? maybe 54 ?, SetPinModeMessage.PIN_MODE.ANALOG.getMode())); // --> not needed
-			sendFirmataMessage(new ReportAnalogPinMessage(pin, report));
+		for (int i = 0; i < ArduinoImpl.NUMBER_OF_ANALOG_PINS; i++) {
+			sendFirmataMessage(new ReportAnalogPinMessage(i, report));
 		}
 	}
 
@@ -347,7 +343,6 @@ public class AsuroImpl implements Asuro {
 		if (!isInitialized) {
 			initialise();
 		}
-
 		reportSensorData(true);
 	}
 
@@ -360,34 +355,23 @@ public class AsuroImpl implements Asuro {
 	@Override
 	public void destroy() {
 		resetPins();
+		reportSensorData(false);
 	}
 
 	public void setDigitalArduinoPin(int digitalPinNumber, int pinValue) {
-		int digitalPort = 0;
-		int PinNumberOfPort;
-		int PortValue;
+		int digitalPort = getPortFromPin(digitalPinNumber);
 
-		if (digitalPinNumber < 8) {
-			digitalPort = 0;
-			PinNumberOfPort = digitalPinNumber;
-		} else {
-			digitalPort = 1;
-			PinNumberOfPort = digitalPinNumber - 8;
-		}
+		asuroListener.setDigitalPinValue(digitalPinNumber, pinValue);
 
-		PortValue = asuroListener.getuCPortValue(digitalPort);
-		if (pinValue > 0) { // set pin
-			PortValue = PortValue | (1 << PinNumberOfPort);
-			asuroListener.setPortValue(digitalPinNumber, 1);
-		} else { // clear pin
-			PortValue = PortValue & ~(1 << PinNumberOfPort);
-			asuroListener.setPortValue(digitalPinNumber, 0);
-		}
-		sendDigitalFirmataMessage(digitalPort, digitalPinNumber, PortValue);
-		asuroListener.setuCPortValue(digitalPort, PortValue);
+		sendDigitalFirmataMessage(digitalPort, digitalPinNumber, asuroListener.getPortValue(digitalPort));
+	}
+
+	public static int getPortFromPin(int pin) {
+		return pin / ArduinoImpl.PINS_IN_A_PORT;
 	}
 
 	private void sendAnalogFirmataMessage(int pin, int value) {
+		sendFirmataMessage(new SetPinModeMessage(pin, SetPinModeMessage.PIN_MODE.PWM.getMode()));
 		sendFirmataMessage(new AnalogMessage(pin, value));
 	}
 
