@@ -164,6 +164,10 @@ public class PreStageActivity extends BaseActivity implements GatherCollisionInf
 			connectBTDevice(BluetoothDevice.PHIRO);
 		}
 
+		if ((requiredResources & Brick.BLUETOOTH_ASURO) != 0) {
+			connectBTDevice(BluetoothDevice.ASURO);
+		}
+
 		if ((requiredResources & Brick.BLUETOOTH_SENSORS_ARDUINO) != 0) {
 			connectBTDevice(BluetoothDevice.ARDUINO);
 		}

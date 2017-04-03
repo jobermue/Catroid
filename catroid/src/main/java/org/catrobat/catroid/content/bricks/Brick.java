@@ -111,6 +111,7 @@ public interface Brick extends Serializable, Cloneable {
 	int BLUETOOTH_LEGO_EV3 = 0x100000;
 	int NETWORK_CONNECTION = 0x200000;
 	int CAST_REQUIRED = 0x400000;
+	int BLUETOOTH_ASURO = 0x800000;
 
 	List<SequenceAction> addActionToSequence(Sprite sprite, SequenceAction sequence);
 

@@ -91,7 +91,7 @@ public class AsuroMotorMoveBackwardBrick extends FormulaBrick {
 
 	@Override
 	public int getRequiredResources() {
-		return BLUETOOTH_PHIRO | getFormulaWithBrickField(BrickField.ASURO_SPEED).getRequiredResources();
+		return BLUETOOTH_ASURO | getFormulaWithBrickField(BrickField.ASURO_SPEED).getRequiredResources();
 	}
 
 	@Override

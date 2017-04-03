@@ -62,7 +62,7 @@ public class AsuroMotorStopBrick extends BrickBaseType implements OnItemSelected
 
 	@Override
 	public int getRequiredResources() {
-		return BLUETOOTH_PHIRO;
+		return BLUETOOTH_ASURO;
 	}
 
 	@Override
