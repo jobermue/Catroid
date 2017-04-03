@@ -45,11 +45,8 @@ import name.antonsmirnov.firmata.serial.ISerial;
 import name.antonsmirnov.firmata.serial.SerialException;
 import name.antonsmirnov.firmata.serial.StreamingSerialAdapter;
 
-public class AsuroImpl /*extends ArduinoImpl*/ implements Asuro {
+public class AsuroImpl extends ArduinoImpl implements Asuro {
 
-	public static final int[] PWM_PINS = { 3, 5, 6, 9, 10, 11 };
-
-	private static final UUID ASURO_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 	private static final String TAG = AsuroImpl.class.getSimpleName();
 
 	private static final int MIN_VALUE = 0;
@@ -74,57 +71,37 @@ public class AsuroImpl /*extends ArduinoImpl*/ implements Asuro {
 	private static final int PIN_RIGHT_MOTOR_BACKWARD = 12; //19
 
 	/* TODO: add pins for bumpers */
-
-	private static final int MIN_PWM_PIN = 2;
-	private static final int MAX_PWM_PIN = 13;
-
-	private static final int MIN_PWM_PIN_GROUP_1 = 3;
-	private static final int MAX_PWM_PIN_GROUP_1 = 3;
-	private static final int MIN_PWM_PIN_GROUP_2 = 5;
-	private static final int MAX_PWM_PIN_GROUP_2 = 6;
-	private static final int MIN_PWM_PIN_GROUP_3 = 9;
-	private static final int MAX_PWM_PIN_GROUP_3 = 11;
-
-	public static final int PIN_SENSOR_BUMPERS = 4;
-	public static final int PIN_SENSOR_BOTTOM_LEFT = 3;
-	public static final int PIN_SENSOR_BOTTOM_RIGHT = 2;
-	public static final int PIN_SENSOR_SIDE_LEFT = 1;
-	public static final int PIN_SENSOR_SIDE_RIGHT = 0;
-
-	private static final int MIN_SENSOR_PIN = 0;
-	private static final int MAX_SENSOR_PIN = 5;
-
-	private Firmata firmata;
-	private boolean isReportingSensorData = false;
-	private boolean isInitialized = false;
-
-	private ArduinoListener arduinoListener;
-	private BluetoothConnection btConnection;
+	private static final int PIN_SENSOR_BUMPERS = 4;
+	private static final int PIN_SENSOR_BOTTOM_LEFT = 3;
+	private static final int PIN_SENSOR_BOTTOM_RIGHT = 2;
+	private static final int PIN_SENSOR_SIDE_LEFT = 1;
+	private static final int PIN_SENSOR_SIDE_RIGHT = 0;
 
 	@Override
 	public void moveLeftMotorForward(int speedInPercent) {
-		sendAnalogFirmataMessage(PIN_LEFT_MOTOR_SPEED, percentToSpeed(speedInPercent));
 		setDigitalArduinoPin(PIN_LEFT_MOTOR_FORWARD, 1);
 		setDigitalArduinoPin(PIN_LEFT_MOTOR_BACKWARD, 0);
+		//setAnalogArduinoPin(PIN_LEFT_MOTOR_SPEED, percentToSpeed(speedInPercent)); conversion not necessary, at the moment done by Arduino code (might change in the future)
+		setAnalogArduinoPin(PIN_LEFT_MOTOR_SPEED, speedInPercent);
 	}
 
 	@Override
 	public void moveLeftMotorBackward(int speedInPercent) {
-		sendAnalogFirmataMessage(PIN_LEFT_MOTOR_SPEED, percentToSpeed(speedInPercent));
 		setDigitalArduinoPin(PIN_LEFT_MOTOR_FORWARD, 0);
 		setDigitalArduinoPin(PIN_LEFT_MOTOR_BACKWARD, 1);
+		setAnalogArduinoPin(PIN_LEFT_MOTOR_SPEED, speedInPercent);
 	}
 
 	@Override
 	public void moveRightMotorForward(int speedInPercent) {
-		sendAnalogFirmataMessage(PIN_RIGHT_MOTOR_SPEED, percentToSpeed(speedInPercent));
+		setAnalogArduinoPin(PIN_RIGHT_MOTOR_SPEED, speedInPercent);
 		setDigitalArduinoPin(PIN_RIGHT_MOTOR_FORWARD, 1);
 		setDigitalArduinoPin(PIN_RIGHT_MOTOR_BACKWARD, 0);
 	}
 
 	@Override
 	public void moveRightMotorBackward(int speedInPercent) {
-		sendAnalogFirmataMessage(PIN_RIGHT_MOTOR_SPEED, percentToSpeed(speedInPercent));
+		setAnalogArduinoPin(PIN_RIGHT_MOTOR_SPEED, speedInPercent);
 		setDigitalArduinoPin(PIN_RIGHT_MOTOR_FORWARD, 0);
 		setDigitalArduinoPin(PIN_RIGHT_MOTOR_BACKWARD, 1);
 	}
@@ -146,20 +123,17 @@ public class AsuroImpl /*extends ArduinoImpl*/ implements Asuro {
 	}
 
 	@Override
-	public void setStatusLEDColor(int red, int green) {
-		red = checkRGBValue(red);
-		green = checkRGBValue(green);
-
-		sendFirmataMessage(new AnalogMessage(PIN_STATUS_LED_RED, red));
-		sendFirmataMessage(new AnalogMessage(PIN_STATUS_LED_GREEN, green));
+	public void setStatusLEDColor(int red, int green) { //color is binary (0 or 1)
+		setDigitalArduinoPin(PIN_STATUS_LED_RED, red);
+		setDigitalArduinoPin(PIN_STATUS_LED_GREEN, green);
 	}
 
 	@Override
 	public void setFrontLED(boolean on) {
 		if (on) {
-			sendFirmataMessage(new AnalogMessage(PIN_FRONT_LED, MAX_VALUE));
+			setDigitalArduinoPin(PIN_FRONT_LED, 1);
 		} else {
-			sendFirmataMessage(new AnalogMessage(PIN_FRONT_LED, MIN_VALUE));
+			setDigitalArduinoPin(PIN_FRONT_LED, 0);
 		}
 	}
 
@@ -171,6 +145,24 @@ public class AsuroImpl /*extends ArduinoImpl*/ implements Asuro {
 	@Override
 	public void setRightBackLED(boolean on) {
 		//TODO
+	}
+
+	@Override
+	public int getSensorValue(Sensors sensor) {
+		switch (sensor) {
+			case ASURO_BUMPERS:
+				return (int) super.getAnalogArduinoPin(PIN_SENSOR_BUMPERS);
+			case ASURO_BOTTOM_LEFT:
+				return (int) super.getAnalogArduinoPin(PIN_SENSOR_BOTTOM_LEFT);
+			case ASURO_BOTTOM_RIGHT:
+				return (int) super.getAnalogArduinoPin(PIN_SENSOR_BOTTOM_RIGHT);
+			case ASURO_SIDE_LEFT:
+				return (int) super.getAnalogArduinoPin(PIN_SENSOR_SIDE_LEFT);
+			case ASURO_SIDE_RIGHT:
+				return (int) super.getAnalogArduinoPin(PIN_SENSOR_SIDE_RIGHT);
+		}
+
+		return 0;
 	}
 
 	private int percentToSpeed(int percent) {
@@ -196,139 +188,6 @@ public class AsuroImpl /*extends ArduinoImpl*/ implements Asuro {
 		return rgbValue;
 	}
 
-	@Override
-	public String getName() {
-		return "Asuro";
-	}
-
-	@Override
-	public void setConnection(BluetoothConnection connection) {
-		this.btConnection = connection;
-	}
-
-	@Override
-	public Class<? extends BluetoothDevice> getDeviceType() {
-		return BluetoothDevice.ASURO;
-	}
-
-	@Override
-	public void disconnect() {
-
-		if (firmata == null) {
-			return;
-		}
-
-		try {
-			resetPins();
-			this.reportSensorData(false);
-			firmata.clearListeners();
-			firmata.getSerial().stop();
-			isInitialized = false;
-			firmata = null;
-		} catch (SerialException e) {
-			Log.d(TAG, "Error stop Asuro serial");
-		}
-	}
-
-	@Override
-	public boolean isAlive() {
-
-		if (firmata == null) {
-			return false;
-		}
-
-		try {
-			firmata.send(new ReportFirmwareVersionMessage());
-			return true;
-		} catch (SerialException e) {
-			return false;
-		}
-	}
-
-	public void reportFirmwareVersion() {
-		if (firmata == null) {
-			return;
-		}
-
-		try {
-			firmata.send(new ReportFirmwareVersionMessage());
-		} catch (SerialException e) {
-			Log.d(TAG, "Firmata Serial error, cannot send message.");
-		}
-	}
-
-	@Override
-	public int getSensorValue(Sensors sensor) {
-		switch (sensor) {
-			case ASURO_BUMPERS:
-				return arduinoListener.getAnalogPinValue(PIN_SENSOR_BUMPERS);
-			case ASURO_BOTTOM_LEFT:
-				return arduinoListener.getAnalogPinValue(PIN_SENSOR_BOTTOM_LEFT);
-			case ASURO_BOTTOM_RIGHT:
-				return arduinoListener.getAnalogPinValue(PIN_SENSOR_BOTTOM_RIGHT);
-			case ASURO_SIDE_LEFT:
-				return arduinoListener.getAnalogPinValue(PIN_SENSOR_SIDE_LEFT);
-			case ASURO_SIDE_RIGHT:
-				return arduinoListener.getAnalogPinValue(PIN_SENSOR_SIDE_RIGHT);
-		}
-
-		return 0;
-	}
-
-	@Override
-	public UUID getBluetoothDeviceUUID() {
-		return ASURO_UUID;
-	}
-
-	@Override
-	public void initialise() {
-
-		if (isInitialized) {
-			return;
-		}
-
-		try {
-			tryInitialize();
-			isInitialized = true;
-		} catch (SerialException e) {
-			Log.d(TAG, "Error starting firmata serials");
-		} catch (IOException e) {
-			Log.d(TAG, "Error opening streams");
-		}
-	}
-
-	private void tryInitialize() throws IOException, SerialException {
-		ISerial serial = new StreamingSerialAdapter(btConnection.getInputStream(), btConnection.getOutputStream());
-
-		firmata = new Firmata(serial);
-
-		arduinoListener = new ArduinoListener();
-		firmata.addListener(arduinoListener);
-
-		firmata.getSerial().start();
-
-		for (int pin : PWM_PINS) {
-			sendFirmataMessage(new SetPinModeMessage(pin, SetPinModeMessage.PIN_MODE.PWM.getMode()));
-		}
-		reportSensorData(true);
-
-		// get status of digital ports
-		sendFirmataMessage(new ReportDigitalPortMessage(0, true));
-		sendFirmataMessage(new ReportDigitalPortMessage(1, true));
-	}
-
-	private void reportSensorData(boolean report) {
-		if (isReportingSensorData == report) {
-			return;
-		}
-
-		isReportingSensorData = report;
-
-		for (int i = 0; i < ArduinoImpl.NUMBER_OF_ANALOG_PINS; i++) {
-			sendFirmataMessage(new ReportAnalogPinMessage(i, report));
-		}
-	}
-
 	private void resetPins() {
 		stopAllMovements();
 		setStatusLEDColor(0, 0);
@@ -338,56 +197,15 @@ public class AsuroImpl /*extends ArduinoImpl*/ implements Asuro {
 	}
 
 	@Override
-	public void start() {
-		if (!isInitialized) {
-			initialise();
-		}
-		reportSensorData(true);
-	}
-
-	@Override
 	public void pause() {
 		stopAllMovements();
-		reportSensorData(false);
+		super.reportSensorData(false);
+		super.pause();
 	}
 
 	@Override
 	public void destroy() {
 		resetPins();
-		reportSensorData(false);
-	}
-
-	public void setDigitalArduinoPin(int digitalPinNumber, int pinValue) {
-		int digitalPort = getPortFromPin(digitalPinNumber);
-
-		arduinoListener.setDigitalPinValue(digitalPinNumber, pinValue);
-
-		sendDigitalFirmataMessage(digitalPort, digitalPinNumber, arduinoListener.getPortValue(digitalPort));
-	}
-
-	public static int getPortFromPin(int pin) {
-		return pin / ArduinoImpl.PINS_IN_A_PORT;
-	}
-
-	private void sendAnalogFirmataMessage(int pin, int value) {
-		sendFirmataMessage(new SetPinModeMessage(pin, SetPinModeMessage.PIN_MODE.PWM.getMode()));
-		sendFirmataMessage(new AnalogMessage(pin, value));
-	}
-
-	private void sendDigitalFirmataMessage(int port, int pin, int value) {
-		sendFirmataMessage(new SetPinModeMessage(pin, SetPinModeMessage.PIN_MODE.OUTPUT.getMode()));
-		sendFirmataMessage(new DigitalMessage(port, value));
-	}
-
-	private void sendFirmataMessage(Message message) {
-		if (firmata == null) {
-			return;
-		}
-
-		try {
-			firmata.send(message);
-		} catch (SerialException e) {
-			Log.d(TAG, "Firmata Serial error, cannot send message.");
-		}
+		super.destroy();
 	}
 }

@@ -170,7 +170,7 @@ public class ArduinoImpl implements Arduino {
 		reportSensorData(true);
 	}
 
-	private void reportSensorData(boolean report) {
+	protected void reportSensorData(boolean report) {
 		if (isReportingSensorData == report) {
 			return;
 		}
