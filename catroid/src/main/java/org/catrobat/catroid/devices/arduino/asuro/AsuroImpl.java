@@ -188,6 +188,16 @@ public class AsuroImpl extends ArduinoImpl implements Asuro {
 		return rgbValue;
 	}
 
+	@Override
+	public String getName() {
+		return "Asuro";
+	}
+
+	@Override
+	public Class<? extends BluetoothDevice> getDeviceType() {
+		return BluetoothDevice.ASURO;
+	}
+
 	private void resetPins() {
 		stopAllMovements();
 		setStatusLEDColor(0, 0);
