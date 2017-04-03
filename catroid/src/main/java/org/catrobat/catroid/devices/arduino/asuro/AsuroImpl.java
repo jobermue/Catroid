@@ -27,11 +27,10 @@ import android.util.Log;
 import org.catrobat.catroid.bluetooth.base.BluetoothConnection;
 import org.catrobat.catroid.bluetooth.base.BluetoothDevice;
 import org.catrobat.catroid.devices.arduino.ArduinoImpl;
+import org.catrobat.catroid.devices.arduino.ArduinoListener;
 import org.catrobat.catroid.formulaeditor.Sensors;
 
 import java.io.IOException;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.UUID;
 
 import name.antonsmirnov.firmata.Firmata;
@@ -99,7 +98,7 @@ public class AsuroImpl /*extends ArduinoImpl*/ implements Asuro {
 	private boolean isReportingSensorData = false;
 	private boolean isInitialized = false;
 
-	private AsuroListener asuroListener;
+	private ArduinoListener arduinoListener;
 	private BluetoothConnection btConnection;
 
 	@Override
@@ -262,15 +261,15 @@ public class AsuroImpl /*extends ArduinoImpl*/ implements Asuro {
 	public int getSensorValue(Sensors sensor) {
 		switch (sensor) {
 			case ASURO_BUMPERS:
-				return asuroListener.getBumperSensor();
+				return arduinoListener.getAnalogPinValue(PIN_SENSOR_BUMPERS);
 			case ASURO_BOTTOM_LEFT:
-				return asuroListener.getBottomLeftSensor();
+				return arduinoListener.getAnalogPinValue(PIN_SENSOR_BOTTOM_LEFT);
 			case ASURO_BOTTOM_RIGHT:
-				return asuroListener.getBottomRightSensor();
+				return arduinoListener.getAnalogPinValue(PIN_SENSOR_BOTTOM_RIGHT);
 			case ASURO_SIDE_LEFT:
-				return asuroListener.getSideLeftSensor();
+				return arduinoListener.getAnalogPinValue(PIN_SENSOR_SIDE_LEFT);
 			case ASURO_SIDE_RIGHT:
-				return asuroListener.getSideRightSensor();
+				return arduinoListener.getAnalogPinValue(PIN_SENSOR_SIDE_RIGHT);
 		}
 
 		return 0;
@@ -303,8 +302,8 @@ public class AsuroImpl /*extends ArduinoImpl*/ implements Asuro {
 
 		firmata = new Firmata(serial);
 
-		asuroListener = new AsuroListener();
-		firmata.addListener(asuroListener);
+		arduinoListener = new ArduinoListener();
+		firmata.addListener(arduinoListener);
 
 		firmata.getSerial().start();
 
@@ -361,9 +360,9 @@ public class AsuroImpl /*extends ArduinoImpl*/ implements Asuro {
 	public void setDigitalArduinoPin(int digitalPinNumber, int pinValue) {
 		int digitalPort = getPortFromPin(digitalPinNumber);
 
-		asuroListener.setDigitalPinValue(digitalPinNumber, pinValue);
+		arduinoListener.setDigitalPinValue(digitalPinNumber, pinValue);
 
-		sendDigitalFirmataMessage(digitalPort, digitalPinNumber, asuroListener.getPortValue(digitalPort));
+		sendDigitalFirmataMessage(digitalPort, digitalPinNumber, arduinoListener.getPortValue(digitalPort));
 	}
 
 	public static int getPortFromPin(int pin) {
