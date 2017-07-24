@@ -22,35 +22,19 @@
  */
 package org.catrobat.catroid.devices.arduino.asuro;
 
-import android.util.Log;
-
 import org.catrobat.catroid.bluetooth.base.BluetoothConnection;
 import org.catrobat.catroid.bluetooth.base.BluetoothDevice;
 import org.catrobat.catroid.devices.arduino.ArduinoImpl;
 import org.catrobat.catroid.devices.arduino.ArduinoListener;
 import org.catrobat.catroid.formulaeditor.Sensors;
 
-import java.io.IOException;
-import java.util.UUID;
-
-import name.antonsmirnov.firmata.Firmata;
-import name.antonsmirnov.firmata.message.AnalogMessage;
-import name.antonsmirnov.firmata.message.DigitalMessage;
-import name.antonsmirnov.firmata.message.Message;
-import name.antonsmirnov.firmata.message.ReportAnalogPinMessage;
-import name.antonsmirnov.firmata.message.ReportDigitalPortMessage;
-import name.antonsmirnov.firmata.message.ReportFirmwareVersionMessage;
-import name.antonsmirnov.firmata.message.SetPinModeMessage;
-import name.antonsmirnov.firmata.serial.ISerial;
-import name.antonsmirnov.firmata.serial.SerialException;
-import name.antonsmirnov.firmata.serial.StreamingSerialAdapter;
 
 public class AsuroImpl extends ArduinoImpl implements Asuro {
 
-	private static final String TAG = AsuroImpl.class.getSimpleName();
+//	private static final String TAG = AsuroImpl.class.getSimpleName();
 
-	private static final int MIN_VALUE = 0;
-	private static final int MAX_VALUE = 255;
+//	private static final int MIN_VALUE = 0;
+//	private static final int MAX_VALUE = 255;
 
 	/* Note: pins are numbered according to Arduino pin numbering */
 	private static final int PIN_STATUS_LED_RED = 2; //4
@@ -163,29 +147,6 @@ public class AsuroImpl extends ArduinoImpl implements Asuro {
 		}
 
 		return 0;
-	}
-
-	private int percentToSpeed(int percent) {
-		if (percent <= 0) {
-			return MIN_VALUE;
-		}
-		if (percent >= 100) {
-			return MAX_VALUE;
-		}
-
-		return (int) (percent * 2.55);
-	}
-
-	private int checkRGBValue(int rgbValue) {
-		if (rgbValue > MAX_VALUE) {
-			return MAX_VALUE;
-		}
-
-		if (rgbValue < MIN_VALUE) {
-			return MIN_VALUE;
-		}
-
-		return rgbValue;
 	}
 
 	@Override
