@@ -1247,15 +1247,26 @@
     <string name="brick_asuro_motor_backward_action">Move Asuro motor backward</string>
     <string name="asuro_motor_speed">Speed</string>
 
-    <!-- sensor -->
+    <!-- if Asuro sensor -->
     <string name="brick_asuro_sensor_begin">If Asuro</string>
     <string name="brick_asuro_sensor_second_part">is activated</string>
 
-    <!-- light -->
+    <!-- status LED -->
     <string name="brick_asuro_rgb_led_action">Set Asuro light</string>
     <string name="asuro_status_led_red">Red</string>
     <string name="asuro_status_led_green">Green</string>
     <!--  -->
+    <string name="asuro_set_status_led">Set Asuro status LED</string>
+    <string name="asuro_led_status_off">Off</string>
+    <string name="asuro_led_status_green">Green</string>
+    <string name="asuro_led_status_red">Red</string>
+    <string name="asuro_led_status_orange">Orange</string>
+    <string name="asuro_led_status_green_flashing">Green flashing</string>
+    <string name="asuro_led_status_red_flashing">Red flashing</string>
+    <string name="asuro_led_status_orange_flashing">Orange flashing</string>
+    <string name="asuro_led_status_green_pulse">Green pulse</string>
+    <string name="asuro_led_status_red_pulse">Red pulse</string>
+    <string name="asuro_led_status_orange_pulse">Orange pulse</string>
 
     <!-- Asuro motor strings -->
     <string name="asuro_motor_left">Left</string>

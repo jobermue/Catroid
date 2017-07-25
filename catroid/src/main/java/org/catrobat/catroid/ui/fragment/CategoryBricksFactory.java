@@ -37,6 +37,7 @@ import org.catrobat.catroid.content.bricks.ArduinoSendDigitalValueBrick;
 import org.catrobat.catroid.content.bricks.ArduinoSendPWMValueBrick;
 import org.catrobat.catroid.content.bricks.AskBrick;
 import org.catrobat.catroid.content.bricks.AskSpeechBrick;
+import org.catrobat.catroid.content.bricks.AsuroStatusLedBrick;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.content.bricks.BroadcastBrick;
 import org.catrobat.catroid.content.bricks.BroadcastReceiverBrick;
@@ -545,6 +546,7 @@ public class CategoryBricksFactory {
 		asuroBrickList.add(new AsuroMotorMoveBackwardBrick(AsuroMotorMoveBackwardBrick.Motor.MOTOR_LEFT,
 				BrickValues.ASURO_SPEED));
 		asuroBrickList.add(new AsuroMotorStopBrick(AsuroMotorStopBrick.Motor.MOTOR_BOTH));
+		asuroBrickList.add(new AsuroStatusLedBrick(AsuroStatusLedBrick.LedStatus.LED_GREEN));
 
 		//TODO
 //		asuroBrickList.add(new PhiroPlayToneBrick(PhiroPlayToneBrick.Tone.DO,

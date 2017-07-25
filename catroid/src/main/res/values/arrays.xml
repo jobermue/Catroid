@@ -227,6 +227,20 @@
         <item>@string/asuro_light_both</item>
     </string-array>
 
+    <!-- Asuro status LED spinner -->
+    <string-array name="asuro_led_status_chooser" >
+        <item >@string/asuro_led_status_off</item>
+        <item >@string/asuro_led_status_green</item>
+        <item >@string/asuro_led_status_red</item>
+        <item >@string/asuro_led_status_orange</item>
+        <!--<item >@string/asuro_led_status_green_flashing</item>-->
+        <!--<item >@string/asuro_led_status_red_flashing</item>-->
+        <!--<item >@string/asuro_led_status_orange_flashing</item>-->
+        <!--<item >@string/asuro_led_status_green_pulse</item>-->
+        <!--<item >@string/asuro_led_status_red_pulse</item>-->
+        <!--<item >@string/asuro_led_status_orange_pulse</item>-->
+    </string-array>
+
     <!-- Asuro sensor spinner -->
     <string-array name="brick_asuro_select_sensor_spinner">
         <item>@string/asuro_sensor_bumper</item>

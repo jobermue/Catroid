@@ -38,6 +38,7 @@ import org.catrobat.catroid.content.actions.ArduinoSendDigitalValueAction;
 import org.catrobat.catroid.content.actions.ArduinoSendPWMValueAction;
 import org.catrobat.catroid.content.actions.AskAction;
 import org.catrobat.catroid.content.actions.AskSpeechAction;
+import org.catrobat.catroid.content.actions.AsuroSetStatusLedAction;
 import org.catrobat.catroid.content.actions.BackgroundNotifyAction;
 import org.catrobat.catroid.content.actions.BroadcastAction;
 import org.catrobat.catroid.content.actions.BroadcastNotifyAction;
@@ -151,6 +152,7 @@ import org.catrobat.catroid.content.actions.WaitForBubbleBrickAction;
 import org.catrobat.catroid.content.actions.WaitUntilAction;
 import org.catrobat.catroid.content.actions.conditional.GlideToAction;
 import org.catrobat.catroid.content.actions.conditional.IfOnEdgeBounceAction;
+import org.catrobat.catroid.content.bricks.AsuroStatusLedBrick;
 import org.catrobat.catroid.content.bricks.LegoEv3MotorMoveBrick;
 import org.catrobat.catroid.content.bricks.LegoEv3MotorStopBrick;
 import org.catrobat.catroid.content.bricks.LegoEv3MotorTurnAngleBrick;
@@ -499,6 +501,12 @@ public class ActionFactory extends Actions {
 		action.setMotorEnum(motorEnum);
 		action.setSprite(sprite);
 		action.setSpeed(speed);
+		return action;
+	}
+
+	public Action createAsuroSetStatusLedAction(AsuroStatusLedBrick.LedStatus ledStatusEnum) {
+		AsuroSetStatusLedAction action = action(AsuroSetStatusLedAction.class);
+		action.setLedStatusEnum(ledStatusEnum);
 		return action;
 	}
 
