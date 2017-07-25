@@ -28,9 +28,11 @@ import org.catrobat.catroid.devices.arduino.ArduinoImpl;
 import org.catrobat.catroid.devices.arduino.ArduinoListener;
 import org.catrobat.catroid.formulaeditor.Sensors;
 
+import java.util.UUID;
 
 public class AsuroImpl extends ArduinoImpl implements Asuro {
 
+	private static final UUID ASURO_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 //	private static final String TAG = AsuroImpl.class.getSimpleName();
 
 //	private static final int MIN_VALUE = 0;
@@ -154,9 +156,10 @@ public class AsuroImpl extends ArduinoImpl implements Asuro {
 		return 0;
 	}
 
+	/* begin BluetoothDevice */
 	@Override
 	public String getName() {
-		return "Asuro";
+		return "ASURO";
 	}
 
 	@Override
@@ -164,6 +167,21 @@ public class AsuroImpl extends ArduinoImpl implements Asuro {
 		return BluetoothDevice.ASURO;
 	}
 
+//	void setConnection(BluetoothConnection connection);
+
+	@Override
+	public void disconnect() {
+		super.disconnect();
+		isInitialized = false;
+	}
+
+//	boolean isAlive();
+
+	@Override
+	public UUID getBluetoothDeviceUUID() { return ASURO_UUID; }
+	/* end BluetoothDevice */
+
+	/* begin StageResourceInterface */
 	@Override
 	public void initialise() {
 		super.initialise();
@@ -180,19 +198,18 @@ public class AsuroImpl extends ArduinoImpl implements Asuro {
 		setDigitalArduinoPin(PIN_WHEEL_ENCODER_LEDS, 1);
 	}
 
-
-	private void resetPins() {
-		stopAllMovements();
-		setStatusLEDColor(0, 0);
-		setFrontLED(false);
-//		setLeftBackLED(false);
-//		setRightBackLED(false);
+	@Override
+	public void start() {
+		super.start();
+		if (!isInitialized) {
+			initialise();
+		}
 	}
 
 	@Override
 	public void pause() {
 		stopAllMovements();
-		super.reportSensorData(false);
+//		super.reportSensorData(false);
 		super.pause();
 	}
 
@@ -200,5 +217,14 @@ public class AsuroImpl extends ArduinoImpl implements Asuro {
 	public void destroy() {
 		resetPins();
 		super.destroy();
+	}
+	/* end StageResourceInterface */
+
+	private void resetPins() {
+		stopAllMovements();
+		setStatusLEDColor(0, 0);
+		setFrontLED(false);
+//		setLeftBackLED(false);
+//		setRightBackLED(false);
 	}
 }

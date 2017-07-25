@@ -339,7 +339,8 @@ public class StageActivity extends AndroidApplication {
 
 		if ((requiredResources & Brick.BLUETOOTH_LEGO_NXT) != 0
 				|| (requiredResources & Brick.BLUETOOTH_PHIRO) != 0
-				|| (requiredResources & Brick.BLUETOOTH_SENSORS_ARDUINO) != 0) {
+				|| (requiredResources & Brick.BLUETOOTH_SENSORS_ARDUINO) != 0
+				|| (requiredResources & Brick.BLUETOOTH_ASURO) != 0) {
 			ServiceProvider.getService(CatroidService.BLUETOOTH_DEVICE_SERVICE).start();
 		}
 

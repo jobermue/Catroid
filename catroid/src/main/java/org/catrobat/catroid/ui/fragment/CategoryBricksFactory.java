@@ -668,6 +668,12 @@ public class CategoryBricksFactory {
 				category = res.getString(R.string.category_phiro);
 			}
 		}
+		categoryBricks = setupAsuroCategoryList();
+		for (Brick categoryBrick : categoryBricks) {
+			if (brick.getClass().equals(categoryBrick.getClass())) {
+				category = res.getString(R.string.category_asuro);
+			}
+		}
 		categoryBricks = setupRaspiCategoryList();
 		for (Brick categoryBrick : categoryBricks) {
 			if (brick.getClass().equals(categoryBrick.getClass())) {

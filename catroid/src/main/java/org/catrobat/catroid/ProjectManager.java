@@ -271,7 +271,7 @@ public final class ProjectManager implements OnLoadProjectCompleteListener, OnCh
 				SettingsActivity.setPhiroSharedPreferenceEnabled(context, true);
 			}
 
-			if ((resources & Brick.BLUETOOTH_PHIRO) > 0) {
+			if ((resources & Brick.BLUETOOTH_ASURO) > 0) {
 				SettingsActivity.setAsuroSharedPreferenceEnabled(context, true);
 			}
 
