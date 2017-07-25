@@ -129,8 +129,7 @@ public class SettingsActivity extends PreferenceActivity {
 			screen.removePreference(phiroPreference);
 		}
 
-		//TODO
-		if (!BuildConfig.FEATURE_PHIRO_ENABLED) {
+		if (!BuildConfig.FEATURE_ASURO_ENABLED) {
 			PreferenceScreen asuroPreference = (PreferenceScreen) findPreference(SETTINGS_SHOW_ASURO_BRICKS);
 			asuroPreference.setEnabled(false);
 			screen.removePreference(asuroPreference);
