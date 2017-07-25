@@ -241,6 +241,12 @@
         <!--<item >@string/asuro_led_status_orange_pulse</item>-->
     </string-array>
 
+    <!-- Asuro line follower LED spinner -->
+    <string-array name="asuro_line_follower_led_chooser" >
+        <item >@string/asuro_line_follower_led_off</item>
+        <item >@string/asuro_line_follower_led_on</item>
+    </string-array>
+
     <!-- Asuro sensor spinner -->
     <string-array name="brick_asuro_select_sensor_spinner">
         <item>@string/asuro_sensor_bumper</item>

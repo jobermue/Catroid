@@ -1268,6 +1268,12 @@
     <string name="asuro_led_status_red_pulse">Red pulse</string>
     <string name="asuro_led_status_orange_pulse">Orange pulse</string>
 
+    <!-- line follower LED -->
+    <string name="asuro_set_line_follower_led">Set Asuro Line Follower LED</string>
+    <string name="asuro_line_follower_led_off">Off</string>
+    <string name="asuro_line_follower_led_on">On</string>
+
+
     <!-- Asuro motor strings -->
     <string name="asuro_motor_left">Left</string>
     <string name="asuro_motor_right">Right</string>

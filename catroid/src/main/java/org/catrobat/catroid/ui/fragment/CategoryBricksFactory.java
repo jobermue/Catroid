@@ -37,6 +37,7 @@ import org.catrobat.catroid.content.bricks.ArduinoSendDigitalValueBrick;
 import org.catrobat.catroid.content.bricks.ArduinoSendPWMValueBrick;
 import org.catrobat.catroid.content.bricks.AskBrick;
 import org.catrobat.catroid.content.bricks.AskSpeechBrick;
+import org.catrobat.catroid.content.bricks.AsuroLineFollowerLedBrick;
 import org.catrobat.catroid.content.bricks.AsuroStatusLedBrick;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.content.bricks.BroadcastBrick;
@@ -547,18 +548,7 @@ public class CategoryBricksFactory {
 				BrickValues.ASURO_SPEED));
 		asuroBrickList.add(new AsuroMotorStopBrick(AsuroMotorStopBrick.Motor.MOTOR_BOTH));
 		asuroBrickList.add(new AsuroStatusLedBrick(AsuroStatusLedBrick.LedStatus.LED_GREEN));
-
-		//TODO
-//		asuroBrickList.add(new PhiroPlayToneBrick(PhiroPlayToneBrick.Tone.DO,
-//				BrickValues.PHIRO_DURATION));
-//		asuroBrickList.add(new PhiroRGBLightBrick(PhiroRGBLightBrick.Eye.BOTH, BrickValues.PHIRO_VALUE_RED, BrickValues.PHIRO_VALUE_GREEN, BrickValues.PHIRO_VALUE_BLUE));
-//		asuroBrickList.add(new PhiroIfLogicBeginBrick());
-//		asuroBrickList.add(new SetVariableBrick(Sensors.PHIRO_FRONT_LEFT));
-//		asuroBrickList.add(new SetVariableBrick(Sensors.PHIRO_FRONT_RIGHT));
-//		asuroBrickList.add(new SetVariableBrick(Sensors.PHIRO_SIDE_LEFT));
-//		asuroBrickList.add(new SetVariableBrick(Sensors.PHIRO_SIDE_RIGHT));
-//		asuroBrickList.add(new SetVariableBrick(Sensors.PHIRO_BOTTOM_LEFT));
-//		asuroBrickList.add(new SetVariableBrick(Sensors.PHIRO_BOTTOM_RIGHT));
+		asuroBrickList.add(new AsuroLineFollowerLedBrick(AsuroLineFollowerLedBrick.LedStatus.LED_ON));
 
 		return asuroBrickList;
 	}

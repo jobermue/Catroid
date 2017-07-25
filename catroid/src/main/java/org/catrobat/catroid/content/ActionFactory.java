@@ -38,6 +38,7 @@ import org.catrobat.catroid.content.actions.ArduinoSendDigitalValueAction;
 import org.catrobat.catroid.content.actions.ArduinoSendPWMValueAction;
 import org.catrobat.catroid.content.actions.AskAction;
 import org.catrobat.catroid.content.actions.AskSpeechAction;
+import org.catrobat.catroid.content.actions.AsuroSetLineFollowerLedAction;
 import org.catrobat.catroid.content.actions.AsuroSetStatusLedAction;
 import org.catrobat.catroid.content.actions.BackgroundNotifyAction;
 import org.catrobat.catroid.content.actions.BroadcastAction;
@@ -152,6 +153,7 @@ import org.catrobat.catroid.content.actions.WaitForBubbleBrickAction;
 import org.catrobat.catroid.content.actions.WaitUntilAction;
 import org.catrobat.catroid.content.actions.conditional.GlideToAction;
 import org.catrobat.catroid.content.actions.conditional.IfOnEdgeBounceAction;
+import org.catrobat.catroid.content.bricks.AsuroLineFollowerLedBrick;
 import org.catrobat.catroid.content.bricks.AsuroStatusLedBrick;
 import org.catrobat.catroid.content.bricks.LegoEv3MotorMoveBrick;
 import org.catrobat.catroid.content.bricks.LegoEv3MotorStopBrick;
@@ -504,37 +506,21 @@ public class ActionFactory extends Actions {
 		return action;
 	}
 
+	public Action createAsuroMotorStopActionAction(AsuroMotorStopBrick.Motor motorEnum) {
+		AsuroMotorStopAction action = action(AsuroMotorStopAction.class);
+		action.setMotorEnum(motorEnum);
+		return action;
+	}
+
 	public Action createAsuroSetStatusLedAction(AsuroStatusLedBrick.LedStatus ledStatusEnum) {
 		AsuroSetStatusLedAction action = action(AsuroSetStatusLedAction.class);
 		action.setLedStatusEnum(ledStatusEnum);
 		return action;
 	}
 
-//TODO
-//	public Action createAsuroRgbLedEyeActionAction(Sprite sprite, AsuroRGBLightBrick.Eye eye,
-//												   Formula red, Formula green, Formula blue) {
-//		AsuroRGBLightAction action = action(AsuroRGBLightAction.class);
-//		action.setSprite(sprite);
-//		action.setEyeEnum(eye);
-//		action.setRed(red);
-//		action.setGreen(green);
-//		action.setBlue(blue);
-//		return action;
-//	}
-//
-//	public Action createAsuroSendSelectedSensorAction(Sprite sprite, int sensorNumber, Action ifAction, Action
-//			elseAction) {
-//		AsuroSensorAction action = action(AsuroSensorAction.class);
-//		action.setSprite(sprite);
-//		action.setSensor(sensorNumber);
-//		action.setIfAction(ifAction);
-//		action.setElseAction(elseAction);
-//		return action;
-//	}
-
-	public Action createAsuroMotorStopActionAction(AsuroMotorStopBrick.Motor motorEnum) {
-		AsuroMotorStopAction action = action(AsuroMotorStopAction.class);
-		action.setMotorEnum(motorEnum);
+	public Action createAsuroSetLineFollowerLedAction(AsuroLineFollowerLedBrick.LedStatus ledStatusEnum) {
+		AsuroSetLineFollowerLedAction action = action(AsuroSetLineFollowerLedAction.class);
+		action.setLedStatusEnum(ledStatusEnum);
 		return action;
 	}
 
