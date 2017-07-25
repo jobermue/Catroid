@@ -39,10 +39,10 @@ public interface Asuro extends BluetoothDevice {
 
 	void setStatusLEDColor(int red, int green);
 	void setFrontLED(boolean on);
-	void setLeftBackLED(boolean on);
-	void setRightBackLED(boolean on);
 
-	void reportFirmwareVersion();
+	// disabled, as it interferes with odometry
+//	void setLeftBackLED(boolean on);
+//	void setRightBackLED(boolean on);
 
 	int getSensorValue(Sensors sensor);
 }

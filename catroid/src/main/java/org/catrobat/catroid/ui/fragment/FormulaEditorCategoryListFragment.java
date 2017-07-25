@@ -180,6 +180,10 @@ public class FormulaEditorCategoryListFragment extends ListFragment implements D
 			R.string.formula_editor_phiro_sensor_side_right, R.string.formula_editor_phiro_sensor_bottom_left,
 			R.string.formula_editor_phiro_sensor_bottom_right};
 
+	private static final int[] ASURO_SENSOR_ITEMS = {R.string.formula_editor_asuro_sensor_bumper,
+			R.string.formula_editor_asuro_sensor_bottom_left, R.string.formula_editor_asuro_sensor_bottom_right,
+			R.string.formula_editor_asuro_sensor_side_left, R.string.formula_editor_asuro_sensor_side_right};
+
 	private static final int[] ARDUINO_SENSOR_ITEMS = {R.string.formula_editor_function_arduino_read_pin_value_analog,
 			R.string.formula_editor_function_arduino_read_pin_value_digital};
 
@@ -423,6 +427,12 @@ public class FormulaEditorCategoryListFragment extends ListFragment implements D
 				header.put(itemsIds.length, getString(R.string.formula_editor_device_phiro));
 				itemsIds = concatAll(itemsIds, PHIRO_SENSOR_ITEMS);
 				parameterIds = concatAll(parameterIds, createEmptyParametersList(PHIRO_SENSOR_ITEMS.length));
+			}
+
+			if (SettingsActivity.isAsuroSharedPreferenceEnabled(context)) {
+				header.put(itemsIds.length, getString(R.string.formula_editor_device_asuro));
+				itemsIds = concatAll(itemsIds, ASURO_SENSOR_ITEMS);
+				parameterIds = concatAll(parameterIds, createEmptyParametersList(ASURO_SENSOR_ITEMS.length));
 			}
 
 			if (SettingsActivity.isArduinoSharedPreferenceEnabled(context)) {

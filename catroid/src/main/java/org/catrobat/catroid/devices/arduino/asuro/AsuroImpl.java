@@ -37,22 +37,25 @@ public class AsuroImpl extends ArduinoImpl implements Asuro {
 //	private static final int MAX_VALUE = 255;
 
 	/* Note: pins are numbered according to Arduino pin numbering */
-	private static final int PIN_STATUS_LED_RED = 2; //4
-	private static final int PIN_STATUS_LED_GREEN = 8; //14
+	private static final int PIN_STATUS_LED_RED = 2; // ATmega328: 4
+	private static final int PIN_STATUS_LED_GREEN = 8; // ATmega328: 14
 
-	private static final int PIN_FRONT_LED = 6; //12
+	private static final int PIN_FRONT_LED = 6; // ATmega328: 12
 
-	/* TODO: find out pins of back LEDs */
+	/* find out pins of back LEDs */
 //	private static final int PIN_BACK_LED_LEFT = 7;
 //	private static final int PIN_BACK_LED_RIGHT = 8;
 	
-	private static final int PIN_LEFT_MOTOR_SPEED = 9; //15
-	private static final int PIN_LEFT_MOTOR_FORWARD = 5; //6
-	private static final int PIN_LEFT_MOTOR_BACKWARD = 4; //11
+	private static final int PIN_LEFT_MOTOR_SPEED = 9; // ATmega328: 15
+	private static final int PIN_LEFT_MOTOR_FORWARD = 5; // ATmega328: 6
+	private static final int PIN_LEFT_MOTOR_BACKWARD = 4; // ATmega328: 11
 
-	private static final int PIN_RIGHT_MOTOR_SPEED = 10; //16
-	private static final int PIN_RIGHT_MOTOR_FORWARD = 13; //18
-	private static final int PIN_RIGHT_MOTOR_BACKWARD = 12; //19
+	private static final int PIN_RIGHT_MOTOR_SPEED = 10; // ATmega328: 16
+	private static final int PIN_RIGHT_MOTOR_FORWARD = 13; // ATmega328: 19
+	private static final int PIN_RIGHT_MOTOR_BACKWARD = 12; // ATmega328: 18
+
+	private static final int PIN_BUMPERS_ENABLE = 3;
+	private static final int PIN_WHEEL_ENCODER_LEDS = 7;
 
 	/* TODO: add pins for bumpers */
 	private static final int PIN_SENSOR_BUMPERS = 4;
@@ -60,6 +63,8 @@ public class AsuroImpl extends ArduinoImpl implements Asuro {
 	private static final int PIN_SENSOR_BOTTOM_RIGHT = 2;
 	private static final int PIN_SENSOR_SIDE_LEFT = 1;
 	private static final int PIN_SENSOR_SIDE_RIGHT = 0;
+
+	private boolean isInitialized = false;
 
 	@Override
 	public void moveLeftMotorForward(int speedInPercent) {
@@ -121,15 +126,15 @@ public class AsuroImpl extends ArduinoImpl implements Asuro {
 		}
 	}
 
-	@Override
-	public void setLeftBackLED(boolean on) {
-		//TODO
-	}
-
-	@Override
-	public void setRightBackLED(boolean on) {
-		//TODO
-	}
+//	@Override
+//	public void setLeftBackLED(boolean on) {
+//		// interferes with odometry
+//	}
+//
+//	@Override
+//	public void setRightBackLED(boolean on) {
+//		// interferes with odometry
+//	}
 
 	@Override
 	public int getSensorValue(Sensors sensor) {
@@ -159,12 +164,29 @@ public class AsuroImpl extends ArduinoImpl implements Asuro {
 		return BluetoothDevice.ASURO;
 	}
 
+	@Override
+	public void initialise() {
+		super.initialise();
+
+		if (isInitialized) {
+			return;
+		}
+		isInitialized = true;
+
+		/* enable bumpers */
+		setDigitalArduinoPin(PIN_BUMPERS_ENABLE, 1);
+
+		/* enable wheel encoder LEDs (odometry) */
+		setDigitalArduinoPin(PIN_WHEEL_ENCODER_LEDS, 1);
+	}
+
+
 	private void resetPins() {
 		stopAllMovements();
 		setStatusLEDColor(0, 0);
 		setFrontLED(false);
-		setLeftBackLED(false);
-		setRightBackLED(false);
+//		setLeftBackLED(false);
+//		setRightBackLED(false);
 	}
 
 	@Override

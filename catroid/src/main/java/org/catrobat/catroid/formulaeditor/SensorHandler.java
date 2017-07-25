@@ -46,6 +46,7 @@ import org.catrobat.catroid.bluetooth.base.BluetoothDeviceService;
 import org.catrobat.catroid.cast.CastManager;
 import org.catrobat.catroid.common.CatroidService;
 import org.catrobat.catroid.common.ServiceProvider;
+import org.catrobat.catroid.devices.arduino.asuro.Asuro;
 import org.catrobat.catroid.devices.arduino.phiro.Phiro;
 import org.catrobat.catroid.devices.mindstorms.ev3.LegoEV3;
 import org.catrobat.catroid.devices.mindstorms.nxt.LegoNXT;
@@ -471,6 +472,17 @@ public final class SensorHandler implements SensorEventListener, SensorCustomEve
 				Phiro phiro = btService.getDevice(BluetoothDevice.PHIRO);
 				if (phiro != null) {
 					return Double.valueOf(phiro.getSensorValue(sensor));
+				}
+				break;
+
+			case ASURO_BOTTOM_LEFT:
+			case ASURO_BOTTOM_RIGHT:
+			case ASURO_BUMPERS:
+			case ASURO_SIDE_LEFT:
+			case ASURO_SIDE_RIGHT:
+				Asuro asuro = btService.getDevice(BluetoothDevice.ASURO);
+				if (asuro != null) {
+					return Double.valueOf(asuro.getSensorValue(sensor));
 				}
 				break;
 

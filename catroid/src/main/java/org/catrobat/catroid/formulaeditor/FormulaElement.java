@@ -1138,6 +1138,14 @@ public class FormulaElement implements Serializable {
 					resources |= Brick.BLUETOOTH_PHIRO;
 					break;
 
+				case ASURO_BOTTOM_LEFT:
+				case ASURO_BOTTOM_RIGHT:
+				case ASURO_BUMPERS:
+				case ASURO_SIDE_LEFT:
+				case ASURO_SIDE_RIGHT:
+					resources |= Brick.BLUETOOTH_ASURO;
+					break;
+
 				case DRONE_BATTERY_STATUS:
 				case DRONE_CAMERA_READY:
 				case DRONE_EMERGENCY_STATE:

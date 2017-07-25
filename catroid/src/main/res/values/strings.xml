@@ -1420,6 +1420,11 @@
     <string name="formula_editor_phiro_sensor_side_right">phiro_side_right_sensor</string>
     <string name="formula_editor_phiro_sensor_bottom_left">phiro_bottom_left_sensor</string>
     <string name="formula_editor_phiro_sensor_bottom_right">phiro_bottom_right_sensor</string>
+    <string name="formula_editor_asuro_sensor_bumper">asuro_bumper_sensor</string>
+    <string name="formula_editor_asuro_sensor_side_left">asuro_side_left_sensor</string>
+    <string name="formula_editor_asuro_sensor_side_right">asuro_side_right_sensor</string>
+    <string name="formula_editor_asuro_sensor_bottom_left">asuro_bottom_left_sensor</string>
+    <string name="formula_editor_asuro_sensor_bottom_right">asuro_bottom_right_sensor</string>
     <string name="formula_editor_nfc_tag_id">nfc_tag_id</string>
     <string name="formula_editor_nfc_tag_message">nfc_tag_message</string>
     <string name="formula_editor_object_x">position_x</string>
@@ -1457,6 +1462,7 @@
     <string name="formula_editor_device_lego">Lego</string>
     <string name="formula_editor_device_arduino">Arduino</string>
     <string name="formula_editor_device_phiro">Phiro</string>
+    <string name="formula_editor_device_asuro">Asuro</string>
     <string name="formula_editor_device_raspberry">Raspberry Pi</string>
     <string name="formula_editor_device_drone">Drone</string>
     <string name="formula_editor_device_nfc">NFC</string>
