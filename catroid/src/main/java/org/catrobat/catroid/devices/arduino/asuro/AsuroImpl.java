@@ -43,10 +43,6 @@ public class AsuroImpl extends ArduinoImpl implements Asuro {
 	private static final int PIN_STATUS_LED_GREEN = 8; // ATmega328: 14
 
 	private static final int PIN_FRONT_LED = 6; // ATmega328: 12
-
-	/* find out pins of back LEDs */
-//	private static final int PIN_BACK_LED_LEFT = 7;
-//	private static final int PIN_BACK_LED_RIGHT = 8;
 	
 	private static final int PIN_LEFT_MOTOR_SPEED = 9; // ATmega328: 15
 	private static final int PIN_LEFT_MOTOR_FORWARD = 5; // ATmega328: 6
@@ -59,7 +55,6 @@ public class AsuroImpl extends ArduinoImpl implements Asuro {
 	private static final int PIN_BUMPERS_ENABLE = 3;
 	private static final int PIN_WHEEL_ENCODER_LEDS = 7;
 
-	/* TODO: add pins for bumpers */
 	private static final int PIN_SENSOR_BUMPERS = 4;
 	private static final int PIN_SENSOR_BOTTOM_LEFT = 3;
 	private static final int PIN_SENSOR_BOTTOM_RIGHT = 2;
@@ -68,49 +63,79 @@ public class AsuroImpl extends ArduinoImpl implements Asuro {
 
 	private boolean isInitialized = false;
 
+	private double correctionFactorLeftMotor, correctionFactorRightMotor; /* value between 0 and 1 */
+
 	@Override
 	public void moveLeftMotorForward(int speedInPercent) {
+		setAnalogArduinoPin(PIN_LEFT_MOTOR_SPEED, (int) (speedInPercent * correctionFactorLeftMotor));
 		setDigitalArduinoPin(PIN_LEFT_MOTOR_FORWARD, 1);
 		setDigitalArduinoPin(PIN_LEFT_MOTOR_BACKWARD, 0);
 		//setAnalogArduinoPin(PIN_LEFT_MOTOR_SPEED, percentToSpeed(speedInPercent)); conversion not necessary, at the moment done by Arduino code (might change in the future)
-		setAnalogArduinoPin(PIN_LEFT_MOTOR_SPEED, speedInPercent);
 	}
 
 	@Override
 	public void moveLeftMotorBackward(int speedInPercent) {
+		setAnalogArduinoPin(PIN_LEFT_MOTOR_SPEED, (int) (speedInPercent * correctionFactorLeftMotor));
 		setDigitalArduinoPin(PIN_LEFT_MOTOR_FORWARD, 0);
 		setDigitalArduinoPin(PIN_LEFT_MOTOR_BACKWARD, 1);
-		setAnalogArduinoPin(PIN_LEFT_MOTOR_SPEED, speedInPercent);
 	}
 
 	@Override
 	public void moveRightMotorForward(int speedInPercent) {
-		setAnalogArduinoPin(PIN_RIGHT_MOTOR_SPEED, speedInPercent);
+		setAnalogArduinoPin(PIN_RIGHT_MOTOR_SPEED, (int) (speedInPercent * correctionFactorRightMotor));
 		setDigitalArduinoPin(PIN_RIGHT_MOTOR_FORWARD, 1);
 		setDigitalArduinoPin(PIN_RIGHT_MOTOR_BACKWARD, 0);
 	}
 
 	@Override
 	public void moveRightMotorBackward(int speedInPercent) {
-		setAnalogArduinoPin(PIN_RIGHT_MOTOR_SPEED, speedInPercent);
+		setAnalogArduinoPin(PIN_RIGHT_MOTOR_SPEED, (int) (speedInPercent * correctionFactorRightMotor));
 		setDigitalArduinoPin(PIN_RIGHT_MOTOR_FORWARD, 0);
 		setDigitalArduinoPin(PIN_RIGHT_MOTOR_BACKWARD, 1);
 	}
 
 	@Override
 	public void stopLeftMotor() {
-		moveLeftMotorForward(0);
+		setAnalogArduinoPin(PIN_LEFT_MOTOR_SPEED, 0);
+		setDigitalArduinoPin(PIN_LEFT_MOTOR_FORWARD, 0);
+		setDigitalArduinoPin(PIN_LEFT_MOTOR_BACKWARD, 0);
 	}
 
 	@Override
 	public void stopRightMotor() {
-		moveRightMotorForward(0);
+		setAnalogArduinoPin(PIN_RIGHT_MOTOR_SPEED, 0);
+		setDigitalArduinoPin(PIN_RIGHT_MOTOR_FORWARD, 0);
+		setDigitalArduinoPin(PIN_RIGHT_MOTOR_BACKWARD, 0);
+	}
+
+	@Override
+	public void moveForward(int speedInPercent) {
+		setDigitalArduinoPin(PIN_LEFT_MOTOR_BACKWARD, 0);
+		setDigitalArduinoPin(PIN_RIGHT_MOTOR_BACKWARD, 0);
+		setDigitalArduinoPin(PIN_LEFT_MOTOR_FORWARD, 1);
+		setDigitalArduinoPin(PIN_RIGHT_MOTOR_FORWARD, 1);
+		setAnalogArduinoPin(PIN_LEFT_MOTOR_SPEED, (int) (speedInPercent * correctionFactorLeftMotor));
+		setAnalogArduinoPin(PIN_RIGHT_MOTOR_SPEED, (int) (speedInPercent * correctionFactorRightMotor));
+	}
+
+	@Override
+	public void moveBackward(int speedInPercent) {
+		setDigitalArduinoPin(PIN_LEFT_MOTOR_FORWARD, 0);
+		setDigitalArduinoPin(PIN_RIGHT_MOTOR_FORWARD, 0);
+		setDigitalArduinoPin(PIN_LEFT_MOTOR_BACKWARD, 1);
+		setDigitalArduinoPin(PIN_RIGHT_MOTOR_BACKWARD, 1);
+		setAnalogArduinoPin(PIN_LEFT_MOTOR_SPEED, (int) (speedInPercent * correctionFactorLeftMotor));
+		setAnalogArduinoPin(PIN_RIGHT_MOTOR_SPEED, (int) (speedInPercent * correctionFactorRightMotor));
 	}
 
 	@Override
 	public void stopAllMovements() {
-		stopLeftMotor();
-		stopRightMotor();
+		setDigitalArduinoPin(PIN_LEFT_MOTOR_BACKWARD, 0);
+		setDigitalArduinoPin(PIN_RIGHT_MOTOR_BACKWARD, 0);
+		setDigitalArduinoPin(PIN_LEFT_MOTOR_FORWARD, 0);
+		setDigitalArduinoPin(PIN_RIGHT_MOTOR_FORWARD, 0);
+		setAnalogArduinoPin(PIN_LEFT_MOTOR_SPEED, 0);
+		setAnalogArduinoPin(PIN_RIGHT_MOTOR_SPEED, 0);
 	}
 
 	@Override
@@ -128,15 +153,17 @@ public class AsuroImpl extends ArduinoImpl implements Asuro {
 		}
 	}
 
-//	@Override
-//	public void setLeftBackLED(boolean on) {
-//		// interferes with odometry
-//	}
-//
-//	@Override
-//	public void setRightBackLED(boolean on) {
-//		// interferes with odometry
-//	}
+	@Override
+	public void setMotorCalibration(double leftRightBias, double speed_correction) {
+		if (leftRightBias > 0) { /* left motor faster */
+			correctionFactorLeftMotor = (1 - leftRightBias) * speed_correction;
+			correctionFactorRightMotor = speed_correction;
+		} else { /* right motor faster */
+			correctionFactorLeftMotor = speed_correction;
+			correctionFactorRightMotor = (1 + leftRightBias) * speed_correction;
+		}
+	}
+
 
 	@Override
 	public int getSensorValue(Sensors sensor) {
@@ -196,6 +223,8 @@ public class AsuroImpl extends ArduinoImpl implements Asuro {
 
 		/* enable wheel encoder LEDs (odometry) */
 		setDigitalArduinoPin(PIN_WHEEL_ENCODER_LEDS, 1);
+
+		setMotorCalibration(0, 1);
 	}
 
 	@Override

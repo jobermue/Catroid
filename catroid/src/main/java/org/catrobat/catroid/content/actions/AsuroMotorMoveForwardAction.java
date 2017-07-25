@@ -75,8 +75,7 @@ public class AsuroMotorMoveForwardAction extends TemporalAction {
 				asuro.moveRightMotorForward(speedValue);
 				break;
 			case MOTOR_BOTH:
-				asuro.moveRightMotorForward(speedValue);
-				asuro.moveLeftMotorForward(speedValue);
+				asuro.moveForward(speedValue);
 				break;
 		}
 	}

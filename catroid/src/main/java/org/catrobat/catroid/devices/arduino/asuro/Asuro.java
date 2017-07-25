@@ -29,20 +29,20 @@ public interface Asuro extends BluetoothDevice {
 
 	void moveLeftMotorForward(int speed);
 	void moveLeftMotorBackward(int speed);
+	void stopLeftMotor();
 
 	void moveRightMotorForward(int speed);
 	void moveRightMotorBackward(int speed);
-
-	void stopLeftMotor();
 	void stopRightMotor();
+
+	void moveForward(int speed);
+	void moveBackward(int speed);
 	void stopAllMovements();
 
 	void setStatusLEDColor(int red, int green);
 	void setFrontLED(boolean on);
 
-	// disabled, as it interferes with odometry
-//	void setLeftBackLED(boolean on);
-//	void setRightBackLED(boolean on);
+	void setMotorCalibration(double leftRightBias, double speed_correction);
 
 	int getSensorValue(Sensors sensor);
 }

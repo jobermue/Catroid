@@ -75,8 +75,7 @@ public class AsuroMotorMoveBackwardAction extends TemporalAction {
 				asuro.moveRightMotorBackward(speedValue);
 				break;
 			case MOTOR_BOTH:
-				asuro.moveRightMotorBackward(speedValue);
-				asuro.moveLeftMotorBackward(speedValue);
+				asuro.moveBackward(speedValue);
 				break;
 		}
 	}
