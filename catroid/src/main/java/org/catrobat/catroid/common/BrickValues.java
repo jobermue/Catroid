@@ -143,6 +143,8 @@ public final class BrickValues {
 	public static final int ASURO_VALUE_RED = 0;
 	public static final int ASURO_VALUE_GREEN = 255;
 	public static final String ASURO_IF_SENSOR_DEFAULT_VALUE = "Front Left Sensor";
+	public static final double ASURO_BIAS = 0;
+	public static final double ASURO_SPEED_FACTOR = 0.5;
 
 	//Constants Arduino
 	public static final int ARDUINO_PWM_INITIAL_PIN_VALUE = 255;

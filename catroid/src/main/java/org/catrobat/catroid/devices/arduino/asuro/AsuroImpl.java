@@ -156,11 +156,11 @@ public class AsuroImpl extends ArduinoImpl implements Asuro {
 	@Override
 	public void setMotorCalibration(double leftRightBias, double speed_correction) {
 		if (leftRightBias > 0) { /* left motor faster */
-			correctionFactorLeftMotor = (1 - leftRightBias) * speed_correction;
+			correctionFactorLeftMotor = (1.0 - leftRightBias) * speed_correction;
 			correctionFactorRightMotor = speed_correction;
 		} else { /* right motor faster */
 			correctionFactorLeftMotor = speed_correction;
-			correctionFactorRightMotor = (1 + leftRightBias) * speed_correction;
+			correctionFactorRightMotor = (1.0 + leftRightBias) * speed_correction;
 		}
 	}
 

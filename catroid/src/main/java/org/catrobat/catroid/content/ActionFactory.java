@@ -38,6 +38,7 @@ import org.catrobat.catroid.content.actions.ArduinoSendDigitalValueAction;
 import org.catrobat.catroid.content.actions.ArduinoSendPWMValueAction;
 import org.catrobat.catroid.content.actions.AskAction;
 import org.catrobat.catroid.content.actions.AskSpeechAction;
+import org.catrobat.catroid.content.actions.AsuroMotorCalibrationAction;
 import org.catrobat.catroid.content.actions.AsuroSetLineFollowerLedAction;
 import org.catrobat.catroid.content.actions.AsuroSetStatusLedAction;
 import org.catrobat.catroid.content.actions.BackgroundNotifyAction;
@@ -497,18 +498,27 @@ public class ActionFactory extends Actions {
 		return action;
 	}
 
-	public Action createAsuroMotorMoveBackwardActionAction(Sprite sprite, AsuroMotorMoveBackwardBrick.Motor motorEnum,
-														   Formula speed) {
-		AsuroMotorMoveBackwardAction action = action(AsuroMotorMoveBackwardAction.class);
-		action.setMotorEnum(motorEnum);
+	public Action createAsuroMotorCalibrationAction(Sprite sprite, Formula bias,
+														   Formula speedFactor) {
+		AsuroMotorCalibrationAction action = action(AsuroMotorCalibrationAction.class);
 		action.setSprite(sprite);
-		action.setSpeed(speed);
+		action.setBias(bias);
+		action.setFactor(speedFactor);
 		return action;
 	}
 
 	public Action createAsuroMotorStopActionAction(AsuroMotorStopBrick.Motor motorEnum) {
 		AsuroMotorStopAction action = action(AsuroMotorStopAction.class);
 		action.setMotorEnum(motorEnum);
+		return action;
+	}
+
+	public Action createAsuroMotorMoveBackwardActionAction(Sprite sprite, AsuroMotorMoveBackwardBrick.Motor motorEnum,
+														   Formula speed) {
+		AsuroMotorMoveBackwardAction action = action(AsuroMotorMoveBackwardAction.class);
+		action.setMotorEnum(motorEnum);
+		action.setSprite(sprite);
+		action.setSpeed(speed);
 		return action;
 	}
 

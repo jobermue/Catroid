@@ -1246,6 +1246,9 @@
     <string name="brick_asuro_motor_forward_action">Move Asuro motor forward</string>
     <string name="brick_asuro_motor_backward_action">Move Asuro motor backward</string>
     <string name="asuro_motor_speed">Speed</string>
+    <string name="brick_asuro_motor_calibration_action">Calibrate Motors</string>
+    <string name="asuro_motor_bias">Left/Right Bias</string>
+    <string name="asuro_speed_correction">Speed Correction Factor</string>
 
     <!-- if Asuro sensor -->
     <string name="brick_asuro_sensor_begin">If Asuro</string>
