@@ -121,6 +121,8 @@ public class Formula implements Serializable {
 			formulaTree = new FormulaElement(ElementType.SENSOR, Functions.ARDUINOANALOG.toString(), null);
 		} else if (value.equalsIgnoreCase(Functions.ARDUINODIGITAL.toString())) {
 			formulaTree = new FormulaElement(ElementType.SENSOR, Functions.ARDUINODIGITAL.toString(), null);
+		} else if (value.equalsIgnoreCase(Functions.ASUROBUMPER.toString())) {
+			formulaTree = new FormulaElement(ElementType.SENSOR, Functions.ASUROBUMPER.toString(), null);
 		} else {
 			formulaTree = new FormulaElement(ElementType.STRING, value, null);
 			internFormula = new InternFormula(formulaTree.getInternTokenList());

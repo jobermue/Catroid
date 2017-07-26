@@ -36,6 +36,7 @@ import org.catrobat.catroid.content.Look;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.devices.arduino.Arduino;
+import org.catrobat.catroid.devices.arduino.asuro.Asuro;
 import org.catrobat.catroid.devices.raspberrypi.RPiSocketConnection;
 import org.catrobat.catroid.devices.raspberrypi.RaspberryPiService;
 import org.catrobat.catroid.formulaeditor.datacontainer.DataContainer;
@@ -501,6 +502,15 @@ public class FormulaElement implements Serializable {
 						return defaultReturnValue;
 					}
 					return arduinoAnalog.getAnalogArduinoPin(doubleValueOfLeftChild.intValue());
+				}
+				break;
+			case ASUROBUMPER:
+				Asuro asuroBumper = ServiceProvider.getService(CatroidService.BLUETOOTH_DEVICE_SERVICE).getDevice(BluetoothDevice.ASURO);
+				if (asuroBumper != null && doubleValueOfLeftChild != null) {
+					if (doubleValueOfLeftChild < 1 || doubleValueOfLeftChild > 6) {
+						return defaultReturnValue;
+					}
+					return asuroBumper.getBumperStatus(doubleValueOfLeftChild.intValue());
 				}
 				break;
 			case RASPIDIGITAL:
@@ -1077,6 +1087,9 @@ public class FormulaElement implements Serializable {
 				case ARDUINOANALOG:
 				case ARDUINODIGITAL:
 					resources |= Brick.BLUETOOTH_SENSORS_ARDUINO;
+					break;
+				case ASUROBUMPER:
+					resources |= Brick.BLUETOOTH_ASURO;
 					break;
 				case RASPIDIGITAL:
 					resources |= Brick.SOCKET_RASPI;

@@ -182,7 +182,8 @@ public class FormulaEditorCategoryListFragment extends ListFragment implements D
 
 	private static final int[] ASURO_SENSOR_ITEMS = {R.string.formula_editor_asuro_sensor_bumper,
 			R.string.formula_editor_asuro_sensor_bottom_left, R.string.formula_editor_asuro_sensor_bottom_right,
-			R.string.formula_editor_asuro_sensor_side_left, R.string.formula_editor_asuro_sensor_side_right};
+			R.string.formula_editor_asuro_sensor_side_left, R.string.formula_editor_asuro_sensor_side_right,
+			R.string.formula_editor_function_asuro_read_bumper};
 
 	private static final int[] ARDUINO_SENSOR_ITEMS = {R.string.formula_editor_function_arduino_read_pin_value_analog,
 			R.string.formula_editor_function_arduino_read_pin_value_digital};

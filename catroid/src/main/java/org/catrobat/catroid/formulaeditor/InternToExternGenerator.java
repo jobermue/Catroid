@@ -91,6 +91,8 @@ public class InternToExternGenerator {
 				.formula_editor_function_arduino_read_pin_value_digital);
 		INTERN_EXTERN_LANGUAGE_CONVERTER_MAP.put(Functions.ARDUINOANALOG.name(),
 				R.string.formula_editor_function_arduino_read_pin_value_analog);
+		INTERN_EXTERN_LANGUAGE_CONVERTER_MAP.put(Functions.ASUROBUMPER.name(), R.string
+				.formula_editor_function_asuro_read_bumper);
 		INTERN_EXTERN_LANGUAGE_CONVERTER_MAP.put(Functions.RASPIDIGITAL.name(), R.string
 				.formula_editor_function_raspi_read_pin_value_digital);
 		INTERN_EXTERN_LANGUAGE_CONVERTER_MAP.put(Sensors.FINGER_X.name(), R.string.formula_editor_function_finger_x);

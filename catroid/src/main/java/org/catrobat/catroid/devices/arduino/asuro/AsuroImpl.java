@@ -22,6 +22,8 @@
  */
 package org.catrobat.catroid.devices.arduino.asuro;
 
+import android.util.Log;
+
 import org.catrobat.catroid.bluetooth.base.BluetoothConnection;
 import org.catrobat.catroid.bluetooth.base.BluetoothDevice;
 import org.catrobat.catroid.devices.arduino.ArduinoImpl;
@@ -33,7 +35,7 @@ import java.util.UUID;
 public class AsuroImpl extends ArduinoImpl implements Asuro {
 
 	private static final UUID ASURO_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-//	private static final String TAG = AsuroImpl.class.getSimpleName();
+	private static final String TAG = AsuroImpl.class.getSimpleName();
 
 //	private static final int MIN_VALUE = 0;
 //	private static final int MAX_VALUE = 255;
@@ -169,7 +171,10 @@ public class AsuroImpl extends ArduinoImpl implements Asuro {
 	public int getSensorValue(Sensors sensor) {
 		switch (sensor) {
 			case ASURO_BUMPERS:
-				return (int) super.getAnalogArduinoPin(PIN_SENSOR_BUMPERS);
+				double adc = super.getAnalogArduinoPin(PIN_SENSOR_BUMPERS);
+				double value = (1023.0/adc - 1.0) * 64;
+				if (value > 0.2) { value += 2.3; }
+				return (int) value;
 			case ASURO_BOTTOM_LEFT:
 				return (int) super.getAnalogArduinoPin(PIN_SENSOR_BOTTOM_LEFT);
 			case ASURO_BOTTOM_RIGHT:
@@ -181,6 +186,20 @@ public class AsuroImpl extends ArduinoImpl implements Asuro {
 		}
 
 		return 0;
+	}
+
+	@Override
+	public double getBumperStatus(int bumperNumber) {
+		double adc = super.getAnalogArduinoPin(PIN_SENSOR_BUMPERS);
+		double value = (1023.0/adc - 1.0) * 64;
+		if (value > 0.2) { value += 2.3; }
+		if (value > 38) { value += 0.3; }
+		if (value > 55) {value += 0.5; }
+
+		Log.d(TAG, "Arduino bumper sensors: " + value);
+		Log.d(TAG, "Arduino bumper sensor " + bumperNumber + ": " + (((int)value) & (1 << (6-bumperNumber))));
+
+		return (((int)value) & (1 << (6-bumperNumber)));
 	}
 
 	/* begin BluetoothDevice */

@@ -1445,6 +1445,7 @@
     <string name="formula_editor_asuro_sensor_side_right">asuro_side_right_sensor</string>
     <string name="formula_editor_asuro_sensor_bottom_left">asuro_bottom_left_sensor</string>
     <string name="formula_editor_asuro_sensor_bottom_right">asuro_bottom_right_sensor</string>
+    <string name="formula_editor_function_asuro_read_bumper">asuro_bumper</string>
     <string name="formula_editor_nfc_tag_id">nfc_tag_id</string>
     <string name="formula_editor_nfc_tag_message">nfc_tag_message</string>
     <string name="formula_editor_object_x">position_x</string>

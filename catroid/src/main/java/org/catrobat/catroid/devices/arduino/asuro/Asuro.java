@@ -45,4 +45,5 @@ public interface Asuro extends BluetoothDevice {
 	void setMotorCalibration(double leftRightBias, double speed_correction);
 
 	int getSensorValue(Sensors sensor);
+	double getBumperStatus(int bumperNumber);
 }
