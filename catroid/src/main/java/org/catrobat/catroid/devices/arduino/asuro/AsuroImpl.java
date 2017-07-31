@@ -32,6 +32,8 @@ import org.catrobat.catroid.formulaeditor.Sensors;
 
 import java.util.UUID;
 
+import name.antonsmirnov.firmata.message.SysexMessage;
+
 public class AsuroImpl extends ArduinoImpl implements Asuro {
 
 	private static final UUID ASURO_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
@@ -39,6 +41,8 @@ public class AsuroImpl extends ArduinoImpl implements Asuro {
 
 //	private static final int MIN_VALUE = 0;
 //	private static final int MAX_VALUE = 255;
+	private static final int SYSEX_COMMAND_CONTROLLED_MOVE = 0x44;
+	private static final int ARDUINO_UINT_MAX = 65535;
 
 	/* Note: pins are numbered according to Arduino pin numbering */
 	private static final int PIN_STATUS_LED_RED = 2; // ATmega328: 4
@@ -138,6 +142,59 @@ public class AsuroImpl extends ArduinoImpl implements Asuro {
 		setDigitalArduinoPin(PIN_RIGHT_MOTOR_FORWARD, 0);
 		setAnalogArduinoPin(PIN_LEFT_MOTOR_SPEED, 0);
 		setAnalogArduinoPin(PIN_RIGHT_MOTOR_SPEED, 0);
+	}
+
+	@Override
+	public void moveMotorsStepsSpeed(int left_steps, int right_steps, int left_dir, int right_dir, int speedInPercent/*,
+			boolean brake*/) {
+
+		if (left_steps > ARDUINO_UINT_MAX) {
+			left_steps = ARDUINO_UINT_MAX;
+			Log.d(TAG, "Left steps too large for Arduino integer.");
+		}
+		if (right_steps > ARDUINO_UINT_MAX) {
+			right_steps = ARDUINO_UINT_MAX;
+			Log.d(TAG, "Right steps too large for Arduino integer.");
+		}
+
+		byte[] data = new byte[7];
+		data[0] = (byte) (left_steps & 0xFF);
+		data[1] = (byte) ((left_steps >> 8) & 0xFF);
+		data[2] = (byte) (right_steps & 0xFF);
+		data[3] = (byte) ((right_steps >> 8) & 0xFF);
+		data[4] = (byte) (left_dir & 0xFF);
+		data[5] = (byte) (right_dir & 0xFF);
+		data[6] = (byte) (speedInPercent & 0xFF);
+		super.sendFirmataMessage(new SysexMessage(SYSEX_COMMAND_CONTROLLED_MOVE, new String(data)));
+
+
+
+		/*final int trigger_level = 650;
+		final int hysteresis = 50;
+
+		double ratio = left_steps / (double) right_steps;
+
+		startOdometry();
+
+		if (left_dir > 0 && right_dir > 0) { // move forward
+			setDigitalArduinoPin(PIN_LEFT_MOTOR_BACKWARD, 0);
+			setDigitalArduinoPin(PIN_RIGHT_MOTOR_BACKWARD, 0);
+			setDigitalArduinoPin(PIN_LEFT_MOTOR_FORWARD, 1);
+			setDigitalArduinoPin(PIN_RIGHT_MOTOR_FORWARD, 1);
+			setAnalogArduinoPin(PIN_LEFT_MOTOR_SPEED, (int) (speedInPercent * correctionFactorLeftMotor * ratio));
+			setAnalogArduinoPin(PIN_RIGHT_MOTOR_SPEED, (int) (speedInPercent * correctionFactorRightMotor/ratio));
+
+
+		} else if (left_dir < 0 && right_dir < 0) { // move backward
+			setDigitalArduinoPin(PIN_LEFT_MOTOR_FORWARD, 0);
+			setDigitalArduinoPin(PIN_RIGHT_MOTOR_FORWARD, 0);
+			setDigitalArduinoPin(PIN_LEFT_MOTOR_BACKWARD, 1);
+			setDigitalArduinoPin(PIN_RIGHT_MOTOR_BACKWARD, 1);
+			setAnalogArduinoPin(PIN_LEFT_MOTOR_SPEED, (int) (speedInPercent * correctionFactorLeftMotor));
+			setAnalogArduinoPin(PIN_RIGHT_MOTOR_SPEED, (int) (speedInPercent * correctionFactorRightMotor));
+		} else { // turn at spot
+
+		}*/
 	}
 
 	@Override

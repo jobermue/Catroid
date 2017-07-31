@@ -39,6 +39,9 @@ public interface Asuro extends BluetoothDevice {
 	void moveBackward(int speed);
 	void stopAllMovements();
 
+	void moveMotorsStepsSpeed(int left_steps, int right_steps, int left_dir, int right_dir, int speed/*, boolean
+	brake*/);
+
 	void setStatusLEDColor(int red, int green);
 	void setFrontLED(boolean on);
 

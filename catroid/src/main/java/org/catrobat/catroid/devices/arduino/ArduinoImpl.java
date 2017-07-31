@@ -264,7 +264,7 @@ public class ArduinoImpl implements Arduino {
 		sendFirmataMessage(new DigitalMessage(port, value));
 	}
 
-	private void sendFirmataMessage(Message message) {
+	protected void sendFirmataMessage(Message message) {
 		if (firmata == null) {
 			return;
 		}

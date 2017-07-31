@@ -39,6 +39,7 @@ import org.catrobat.catroid.content.actions.ArduinoSendPWMValueAction;
 import org.catrobat.catroid.content.actions.AskAction;
 import org.catrobat.catroid.content.actions.AskSpeechAction;
 import org.catrobat.catroid.content.actions.AsuroMotorCalibrationAction;
+import org.catrobat.catroid.content.actions.AsuroMotorsMoveStepsAction;
 import org.catrobat.catroid.content.actions.AsuroSetLineFollowerLedAction;
 import org.catrobat.catroid.content.actions.AsuroSetStatusLedAction;
 import org.catrobat.catroid.content.actions.BackgroundNotifyAction;
@@ -518,6 +519,15 @@ public class ActionFactory extends Actions {
 		AsuroMotorMoveBackwardAction action = action(AsuroMotorMoveBackwardAction.class);
 		action.setMotorEnum(motorEnum);
 		action.setSprite(sprite);
+		action.setSpeed(speed);
+		return action;
+	}
+
+	public Action createAsuroMotorsMoveStepsAction(Sprite sprite, Formula left_steps, Formula right_steps, Formula
+			speed) {
+		AsuroMotorsMoveStepsAction action = action(AsuroMotorsMoveStepsAction.class);
+		action.setLeftSteps(left_steps);
+		action.setRightSteps(right_steps);
 		action.setSpeed(speed);
 		return action;
 	}
