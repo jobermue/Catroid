@@ -227,6 +227,12 @@
         <item>@string/asuro_light_both</item>
     </string-array>
 
+    <!-- Asuro odometry debug spinner -->
+    <string-array name="asuro_odometry_debug_chooser" >
+        <item >@string/asuro_odometry_debug_off</item>
+        <item >@string/asuro_odometry_debug_on</item>
+    </string-array>
+
     <!-- Asuro status LED spinner -->
     <string-array name="asuro_led_status_chooser" >
         <item >@string/asuro_led_status_off</item>

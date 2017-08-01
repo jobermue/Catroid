@@ -40,8 +40,11 @@ import org.catrobat.catroid.content.actions.AskAction;
 import org.catrobat.catroid.content.actions.AskSpeechAction;
 import org.catrobat.catroid.content.actions.AsuroMotorCalibrationAction;
 import org.catrobat.catroid.content.actions.AsuroMotorsMoveStepsAction;
+import org.catrobat.catroid.content.actions.AsuroOdometryCalibrationAction;
 import org.catrobat.catroid.content.actions.AsuroSetLineFollowerLedAction;
+import org.catrobat.catroid.content.actions.AsuroSetOdometryDebugAction;
 import org.catrobat.catroid.content.actions.AsuroSetStatusLedAction;
+import org.catrobat.catroid.content.actions.AsuroTurnAngleAction;
 import org.catrobat.catroid.content.actions.BackgroundNotifyAction;
 import org.catrobat.catroid.content.actions.BroadcastAction;
 import org.catrobat.catroid.content.actions.BroadcastNotifyAction;
@@ -156,6 +159,7 @@ import org.catrobat.catroid.content.actions.WaitUntilAction;
 import org.catrobat.catroid.content.actions.conditional.GlideToAction;
 import org.catrobat.catroid.content.actions.conditional.IfOnEdgeBounceAction;
 import org.catrobat.catroid.content.bricks.AsuroLineFollowerLedBrick;
+import org.catrobat.catroid.content.bricks.AsuroOdometryDebugBrick;
 import org.catrobat.catroid.content.bricks.AsuroStatusLedBrick;
 import org.catrobat.catroid.content.bricks.LegoEv3MotorMoveBrick;
 import org.catrobat.catroid.content.bricks.LegoEv3MotorStopBrick;
@@ -529,6 +533,30 @@ public class ActionFactory extends Actions {
 		action.setLeftSteps(left_steps);
 		action.setRightSteps(right_steps);
 		action.setSpeed(speed);
+		action.setSprite(sprite);
+		return action;
+	}
+
+	public Action createAsuroTurnAngleAction(Sprite sprite, Formula angle) {
+		AsuroTurnAngleAction action = action(AsuroTurnAngleAction.class);
+		action.setAngle(angle);
+		action.setSprite(sprite);
+		return action;
+	}
+
+	public Action createAsuroOdometryCalibrationAction(Sprite sprite, Formula left_trigger, Formula right_trigger,
+			Formula hysteresis) {
+		AsuroOdometryCalibrationAction action = action(AsuroOdometryCalibrationAction.class);
+		action.setLeftTrigger(left_trigger);
+		action.setRightTrigger(right_trigger);
+		action.setHysteresis(hysteresis);
+		action.setSprite(sprite);
+		return action;
+	}
+
+	public Action createAsuroSetOdometryDebugAction(AsuroOdometryDebugBrick.OdometryDebugStatus statusEnum) {
+		AsuroSetOdometryDebugAction action = action(AsuroSetOdometryDebugAction.class);
+		action.setOdometryDebugStatus(statusEnum);
 		return action;
 	}
 

@@ -1253,6 +1253,20 @@
     <string name="asuro_motor_left_steps">Left Motor Steps</string>
     <string name="asuro_motor_right_steps">Right Motor Steps</string>
 
+    <!-- turn -->
+    <string name="brick_asuro_turn_angle_action">Turn Asuro by</string>
+
+    <!-- odometry debug -->
+    <string name="asuro_set_odometry_debug">Set Asuro Odometry Debugging</string>
+    <string name="asuro_odometry_debug_off">Off</string>
+    <string name="asuro_odometry_debug_on">On</string>
+
+    <!-- odometry calibration -->
+    <string name="brick_asuro_odometry_calibration_action">Configure Odometry</string>
+    <string name="asuro_odometry_left_trigger">Left Trigger Level</string>
+    <string name="asuro_odometry_right_trigger">Right Trigger Level</string>
+    <string name="asuro_odometry_hysteresis">Hysteresis</string>
+
     <!-- if Asuro sensor -->
     <string name="brick_asuro_sensor_begin">If Asuro</string>
     <string name="brick_asuro_sensor_second_part">is activated</string>

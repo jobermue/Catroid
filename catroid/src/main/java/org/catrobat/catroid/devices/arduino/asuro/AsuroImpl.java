@@ -34,6 +34,8 @@ import java.util.UUID;
 
 import name.antonsmirnov.firmata.message.SysexMessage;
 
+import static java.lang.Math.abs;
+
 public class AsuroImpl extends ArduinoImpl implements Asuro {
 
 	private static final UUID ASURO_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
@@ -42,7 +44,9 @@ public class AsuroImpl extends ArduinoImpl implements Asuro {
 //	private static final int MIN_VALUE = 0;
 //	private static final int MAX_VALUE = 255;
 	private static final int SYSEX_COMMAND_CONTROLLED_MOVE = 0x44;
-	private static final int ARDUINO_UINT_MAX = 65535;
+	private static final int SYSEX_COMMAND_ODOMETRY_SET_LEVELS = 0x45;
+	private static final int SYSEX_COMMAND_ODOMETRY_DEBUG = 0x46;
+	private static final int FIRMATA_UINT_MAX = 16383;
 
 	/* Note: pins are numbered according to Arduino pin numbering */
 	private static final int PIN_STATUS_LED_RED = 2; // ATmega328: 4
@@ -148,23 +152,23 @@ public class AsuroImpl extends ArduinoImpl implements Asuro {
 	public void moveMotorsStepsSpeed(int left_steps, int right_steps, int left_dir, int right_dir, int speedInPercent/*,
 			boolean brake*/) {
 
-		if (left_steps > ARDUINO_UINT_MAX) {
-			left_steps = ARDUINO_UINT_MAX;
-			Log.d(TAG, "Left steps too large for Arduino integer.");
+		if (left_steps > FIRMATA_UINT_MAX) {
+			left_steps = FIRMATA_UINT_MAX;
+			Log.d(TAG, "Left steps too large for Firmata integer.");
 		}
-		if (right_steps > ARDUINO_UINT_MAX) {
-			right_steps = ARDUINO_UINT_MAX;
-			Log.d(TAG, "Right steps too large for Arduino integer.");
+		if (right_steps > FIRMATA_UINT_MAX) {
+			right_steps = FIRMATA_UINT_MAX;
+			Log.d(TAG, "Right steps too large for Firmata integer.");
 		}
 
 		byte[] data = new byte[7];
-		data[0] = (byte) (left_steps & 0xFF);
-		data[1] = (byte) ((left_steps >> 8) & 0xFF);
-		data[2] = (byte) (right_steps & 0xFF);
-		data[3] = (byte) ((right_steps >> 8) & 0xFF);
-		data[4] = (byte) (left_dir & 0xFF);
-		data[5] = (byte) (right_dir & 0xFF);
-		data[6] = (byte) (speedInPercent & 0xFF);
+		data[0] = (byte) (left_steps & 0x7F);
+		data[1] = (byte) ((left_steps >> 7) & 0x7F);
+		data[2] = (byte) (right_steps & 0x7F);
+		data[3] = (byte) ((right_steps >> 7) & 0x7F);
+		data[4] = (byte) (left_dir & 0x7F);
+		data[5] = (byte) (right_dir & 0x7F);
+		data[6] = (byte) (speedInPercent & 0x7F);
 		super.sendFirmataMessage(new SysexMessage(SYSEX_COMMAND_CONTROLLED_MOVE, new String(data)));
 
 
@@ -195,6 +199,54 @@ public class AsuroImpl extends ArduinoImpl implements Asuro {
 		} else { // turn at spot
 
 		}*/
+	}
+
+	@Override
+	public void turnAngle(int degreesWithSign) {
+		int left_dir = (degreesWithSign > 0) ? 1 : -1;
+		int degrees = abs(degreesWithSign);
+		if (degrees == 90) {
+			moveMotorsStepsSpeed(26, 26, left_dir, -left_dir, 40);
+		} else if (degrees == 180) {
+			moveMotorsStepsSpeed(53, 53, left_dir, -left_dir, 40);
+		} else if (degrees == 360) {
+			moveMotorsStepsSpeed(110, 110, left_dir, -left_dir, 40);
+		} else {
+			int steps = degrees * 110 / 360;
+			moveMotorsStepsSpeed(steps, steps, left_dir, -left_dir, 40);
+		}
+	}
+
+	@Override
+	public void setOdometryDebug(boolean status) {
+		byte[] data = new byte[1];
+		data[0] = status ? (byte) 1 : (byte) 0;
+		super.sendFirmataMessage(new SysexMessage(SYSEX_COMMAND_ODOMETRY_DEBUG, new String(data)));
+	}
+
+	@Override
+	public void configureOdometry(int trigger_level_left, int trigger_level_right, int hysteresis) {
+		if (trigger_level_left > FIRMATA_UINT_MAX) {
+			trigger_level_left = FIRMATA_UINT_MAX;
+			Log.d(TAG, "Left trigger level too large for Firmata integer.");
+		}
+		if (trigger_level_right > FIRMATA_UINT_MAX) {
+			trigger_level_right = FIRMATA_UINT_MAX;
+			Log.d(TAG, "Right trigger level too large for Firmata integer.");
+		}
+		if (hysteresis > FIRMATA_UINT_MAX) {
+			hysteresis = FIRMATA_UINT_MAX;
+			Log.d(TAG, "Hysteresis too large for Firmata integer.");
+		}
+
+		byte[] data = new byte[6];
+		data[0] = (byte) (trigger_level_left & 0x7F);
+		data[1] = (byte) ((trigger_level_left >> 7) & 0x7F);
+		data[2] = (byte) (trigger_level_right & 0x7F);
+		data[3] = (byte) ((trigger_level_right >> 7) & 0x7F);
+		data[4] = (byte) (hysteresis & 0x7F);
+		data[5] = (byte) ((hysteresis >> 7) & 0x7F);
+		super.sendFirmataMessage(new SysexMessage(SYSEX_COMMAND_ODOMETRY_SET_LEVELS, new String(data)));
 	}
 
 	@Override
