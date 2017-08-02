@@ -58,7 +58,7 @@ public class AsuroMoveForwardStepsAction extends TemporalAction {
 		}
 
 		asuro.moveForwardSteps(stepsValue);
-		super.setDuration(stepsValue * 3f/200f);
+		super.setDuration(stepsValue * 3f/100f);
 	}
 
 	@Override

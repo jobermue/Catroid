@@ -181,17 +181,18 @@ public class AsuroImpl extends ArduinoImpl implements Asuro {
 
 	@Override
 	public void turnAngle(int degreesWithSign) {
+		int speed = 50;
 		int left_dir = (degreesWithSign > 0) ? 1 : -1;
 		int degrees = abs(degreesWithSign);
 		if (degrees == 90) {
-			moveMotorsStepsSpeed(26, 26, left_dir, -left_dir, 40);
+			moveMotorsStepsSpeed(27, 27, left_dir, -left_dir, speed);
 		} else if (degrees == 180) {
-			moveMotorsStepsSpeed(53, 53, left_dir, -left_dir, 40);
+			moveMotorsStepsSpeed(53, 53, left_dir, -left_dir, speed);
 		} else if (degrees == 360) {
-			moveMotorsStepsSpeed(110, 110, left_dir, -left_dir, 40);
+			moveMotorsStepsSpeed(110, 110, left_dir, -left_dir, speed);
 		} else {
 			int steps = degrees * 110 / 360;
-			moveMotorsStepsSpeed(steps, steps, left_dir, -left_dir, 40);
+			moveMotorsStepsSpeed(steps, steps, left_dir, -left_dir, speed);
 		}
 	}
 

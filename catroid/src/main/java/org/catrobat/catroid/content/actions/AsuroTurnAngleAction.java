@@ -59,7 +59,7 @@ public class AsuroTurnAngleAction extends TemporalAction {
 		}
 
 		asuro.turnAngle(angleValue);
-		super.setDuration(angleValue * 1.2f/90f);
+		super.setDuration(angleValue * 1.5f/90f);
 	}
 
 	@Override
