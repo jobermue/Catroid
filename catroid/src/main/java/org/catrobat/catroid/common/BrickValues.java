@@ -152,7 +152,6 @@ public final class BrickValues {
 	public static final int ASURO_HYSTERESIS_INITIAL = 20;
 	public static final int ASURO_ANGLE_INITIAL = 90;
 
-
 	//Constants Arduino
 	public static final int ARDUINO_PWM_INITIAL_PIN_VALUE = 255;
 	public static final int ARDUINO_PWM_INITIAL_PIN_NUMBER = 3;
