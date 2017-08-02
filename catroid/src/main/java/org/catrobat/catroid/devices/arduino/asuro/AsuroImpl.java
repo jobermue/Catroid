@@ -170,35 +170,13 @@ public class AsuroImpl extends ArduinoImpl implements Asuro {
 		data[5] = (byte) (right_dir & 0x7F);
 		data[6] = (byte) (speedInPercent & 0x7F);
 		super.sendFirmataMessage(new SysexMessage(SYSEX_COMMAND_CONTROLLED_MOVE, new String(data)));
+	}
 
-
-
-		/*final int trigger_level = 650;
-		final int hysteresis = 50;
-
-		double ratio = left_steps / (double) right_steps;
-
-		startOdometry();
-
-		if (left_dir > 0 && right_dir > 0) { // move forward
-			setDigitalArduinoPin(PIN_LEFT_MOTOR_BACKWARD, 0);
-			setDigitalArduinoPin(PIN_RIGHT_MOTOR_BACKWARD, 0);
-			setDigitalArduinoPin(PIN_LEFT_MOTOR_FORWARD, 1);
-			setDigitalArduinoPin(PIN_RIGHT_MOTOR_FORWARD, 1);
-			setAnalogArduinoPin(PIN_LEFT_MOTOR_SPEED, (int) (speedInPercent * correctionFactorLeftMotor * ratio));
-			setAnalogArduinoPin(PIN_RIGHT_MOTOR_SPEED, (int) (speedInPercent * correctionFactorRightMotor/ratio));
-
-
-		} else if (left_dir < 0 && right_dir < 0) { // move backward
-			setDigitalArduinoPin(PIN_LEFT_MOTOR_FORWARD, 0);
-			setDigitalArduinoPin(PIN_RIGHT_MOTOR_FORWARD, 0);
-			setDigitalArduinoPin(PIN_LEFT_MOTOR_BACKWARD, 1);
-			setDigitalArduinoPin(PIN_RIGHT_MOTOR_BACKWARD, 1);
-			setAnalogArduinoPin(PIN_LEFT_MOTOR_SPEED, (int) (speedInPercent * correctionFactorLeftMotor));
-			setAnalogArduinoPin(PIN_RIGHT_MOTOR_SPEED, (int) (speedInPercent * correctionFactorRightMotor));
-		} else { // turn at spot
-
-		}*/
+	@Override
+	public void moveForwardSteps(int stepsWithSign) {
+		int dir = (stepsWithSign > 0) ? 1 : -1;
+		int steps = abs(stepsWithSign);
+		moveMotorsStepsSpeed(steps, steps, dir, dir, 50);
 	}
 
 	@Override

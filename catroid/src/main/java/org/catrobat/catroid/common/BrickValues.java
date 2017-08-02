@@ -151,6 +151,7 @@ public final class BrickValues {
 	public static final int ASURO_TRIGGER_INITIAL_RIGHT = 800;
 	public static final int ASURO_HYSTERESIS_INITIAL = 20;
 	public static final int ASURO_ANGLE_INITIAL = 90;
+	public static final int ASURO_STEPS_INITIAL = 100;
 
 	//Constants Arduino
 	public static final int ARDUINO_PWM_INITIAL_PIN_VALUE = 255;

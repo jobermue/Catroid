@@ -41,7 +41,8 @@ public interface Asuro extends BluetoothDevice {
 
 	void moveMotorsStepsSpeed(int left_steps, int right_steps, int left_dir, int right_dir, int speed/*, boolean
 	brake*/);
-	void turnAngle(int degrees);
+	void moveForwardSteps(int stepsWithSign);
+	void turnAngle(int degreesWithSign);
 	void setOdometryDebug(boolean status);
 	void configureOdometry(int trigger_level_left, int trigger_level_right, int hysteresis);
 

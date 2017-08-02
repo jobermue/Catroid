@@ -1253,6 +1253,10 @@
     <string name="asuro_motor_left_steps">Left Motor Steps</string>
     <string name="asuro_motor_right_steps">Right Motor Steps</string>
 
+    <!-- move forward -->
+    <string name="brick_asuro_move_forward_steps_action">Move Asuro forward by</string>
+    <string name="brick_asuro_move_forward_steps_steps">steps</string>
+
     <!-- turn -->
     <string name="brick_asuro_turn_angle_action">Turn Asuro by</string>
 

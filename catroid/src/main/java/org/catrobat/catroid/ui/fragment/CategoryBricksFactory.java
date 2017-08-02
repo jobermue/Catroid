@@ -43,6 +43,7 @@ import org.catrobat.catroid.content.bricks.AsuroMotorMoveBackwardBrick;
 import org.catrobat.catroid.content.bricks.AsuroMotorMoveForwardBrick;
 import org.catrobat.catroid.content.bricks.AsuroMotorsMoveStepsBrick;
 import org.catrobat.catroid.content.bricks.AsuroMotorStopBrick;
+import org.catrobat.catroid.content.bricks.AsuroMoveForwardStepsBrick;
 import org.catrobat.catroid.content.bricks.AsuroOdometryCalibrationBrick;
 import org.catrobat.catroid.content.bricks.AsuroOdometryDebugBrick;
 import org.catrobat.catroid.content.bricks.AsuroStatusLedBrick;
@@ -543,11 +544,12 @@ public class CategoryBricksFactory {
 
 	private List<Brick> setupAsuroCategoryList() {
 		List<Brick> asuroBrickList = new ArrayList<>();
+		asuroBrickList.add(new AsuroMoveForwardStepsBrick(BrickValues.ASURO_STEPS_INITIAL));
+		asuroBrickList.add(new AsuroTurnAngleBrick(BrickValues.ASURO_ANGLE_INITIAL));
 		asuroBrickList.add(new AsuroMotorMoveForwardBrick(AsuroMotorMoveForwardBrick.Motor.MOTOR_LEFT,
 				BrickValues.ASURO_SPEED));
 		asuroBrickList.add(new AsuroMotorMoveBackwardBrick(AsuroMotorMoveBackwardBrick.Motor.MOTOR_LEFT,
 				BrickValues.ASURO_SPEED));
-		asuroBrickList.add(new AsuroTurnAngleBrick(BrickValues.ASURO_ANGLE_INITIAL));
 		asuroBrickList.add(new AsuroMotorStopBrick(AsuroMotorStopBrick.Motor.MOTOR_BOTH));
 		asuroBrickList.add(new AsuroMotorsMoveStepsBrick(BrickValues.ASURO_STEPS_INITIAL_LEFT, BrickValues
 				.ASURO_STEPS_INITIAL_RIGHT, BrickValues.ASURO_SPEED));

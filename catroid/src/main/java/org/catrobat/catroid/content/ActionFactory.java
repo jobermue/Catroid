@@ -43,6 +43,7 @@ import org.catrobat.catroid.content.actions.AsuroMotorMoveBackwardAction;
 import org.catrobat.catroid.content.actions.AsuroMotorMoveForwardAction;
 import org.catrobat.catroid.content.actions.AsuroMotorsMoveStepsAction;
 import org.catrobat.catroid.content.actions.AsuroMotorStopAction;
+import org.catrobat.catroid.content.actions.AsuroMoveForwardStepsAction;
 import org.catrobat.catroid.content.actions.AsuroOdometryCalibrationAction;
 import org.catrobat.catroid.content.actions.AsuroSetLineFollowerLedAction;
 import org.catrobat.catroid.content.actions.AsuroSetOdometryDebugAction;
@@ -526,6 +527,13 @@ public class ActionFactory extends Actions {
 		action.setLeftSteps(left_steps);
 		action.setRightSteps(right_steps);
 		action.setSpeed(speed);
+		action.setSprite(sprite);
+		return action;
+	}
+
+	public Action createAsuroMoveForwardStepsAction(Sprite sprite, Formula steps) {
+		AsuroMoveForwardStepsAction action = action(AsuroMoveForwardStepsAction.class);
+		action.setSteps(steps);
 		action.setSprite(sprite);
 		return action;
 	}
