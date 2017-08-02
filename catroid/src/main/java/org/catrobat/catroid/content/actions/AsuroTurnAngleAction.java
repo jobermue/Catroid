@@ -44,7 +44,7 @@ public class AsuroTurnAngleAction extends TemporalAction {
 	private BluetoothDeviceService btService = ServiceProvider.getService(CatroidService.BLUETOOTH_DEVICE_SERVICE);
 
 	@Override
-	protected void update(float percent) {
+	protected void begin() {
 		int angleValue;
 		try {
 			angleValue = angle.interpretInteger(sprite);
@@ -59,6 +59,12 @@ public class AsuroTurnAngleAction extends TemporalAction {
 		}
 
 		asuro.turnAngle(angleValue);
+		super.setDuration(angleValue * 1.2f/90f);
+	}
+
+	@Override
+	protected void update(float percent) {
+
 	}
 
 	public void setAngle(Formula angle) {
